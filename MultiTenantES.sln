@@ -1,0 +1,85 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36414.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniEnroll.Api", "UniEnroll.Api\UniEnroll.Api.csproj", "{42BA979F-1782-4212-A72B-9088B5A346FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniEnroll.Application", "UniEnroll.Application\UniEnroll.Application.csproj", "{29DAE8C1-A916-48EA-A779-6629DD02A60D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniEnroll.Domain", "UniEnroll.Domain\UniEnroll.Domain.csproj", "{9259F136-17BE-4B2B-909D-B1D64C869CF4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniEnroll.Infrastructure.EF", "UniEnroll.Infrastructure.EF\UniEnroll.Infrastructure.EF.csproj", "{558729F1-6736-47D2-B883-9FF2F9C5800A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniEnroll.Infrastructure.Common", "UniEnroll.Infrastructure.Common\UniEnroll.Infrastructure.Common.csproj", "{88458D0A-9B55-4DCF-96A8-DA59688B71FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniEnroll.Observability", "UniEnroll.Observability\UniEnroll.Observability.csproj", "{25980305-A339-414F-94E8-7520A577AC84}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniEnroll.Contracts", "UniEnroll.Contracts\UniEnroll.Contracts.csproj", "{1C7B10C2-40E3-4152-A14C-5428199F7480}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniEnroll.BackgroundWorker", "UniEnroll.BackgroundWorker\UniEnroll.BackgroundWorker.csproj", "{A7F36E02-7A4C-48D9-9806-123E75845AE2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniEnroll.Seeder", "UniEnroll.Seeder\UniEnroll.Seeder.csproj", "{33695E4F-4770-48CC-90BE-04F507D2E032}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniEnroll.Messaging", "UniEnroll.Messaging\UniEnroll.Messaging.csproj", "{9DD7E655-978F-46DC-A7AD-EB6DB6A7737C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniEnroll.Reporting", "UniEnroll.Reporting\UniEnroll.Reporting.csproj", "{CF885690-5ECD-45CC-9C88-71BDFC73E39B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{42BA979F-1782-4212-A72B-9088B5A346FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42BA979F-1782-4212-A72B-9088B5A346FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42BA979F-1782-4212-A72B-9088B5A346FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42BA979F-1782-4212-A72B-9088B5A346FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29DAE8C1-A916-48EA-A779-6629DD02A60D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29DAE8C1-A916-48EA-A779-6629DD02A60D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29DAE8C1-A916-48EA-A779-6629DD02A60D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29DAE8C1-A916-48EA-A779-6629DD02A60D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9259F136-17BE-4B2B-909D-B1D64C869CF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9259F136-17BE-4B2B-909D-B1D64C869CF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9259F136-17BE-4B2B-909D-B1D64C869CF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9259F136-17BE-4B2B-909D-B1D64C869CF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{558729F1-6736-47D2-B883-9FF2F9C5800A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{558729F1-6736-47D2-B883-9FF2F9C5800A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{558729F1-6736-47D2-B883-9FF2F9C5800A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{558729F1-6736-47D2-B883-9FF2F9C5800A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88458D0A-9B55-4DCF-96A8-DA59688B71FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88458D0A-9B55-4DCF-96A8-DA59688B71FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88458D0A-9B55-4DCF-96A8-DA59688B71FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88458D0A-9B55-4DCF-96A8-DA59688B71FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25980305-A339-414F-94E8-7520A577AC84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25980305-A339-414F-94E8-7520A577AC84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25980305-A339-414F-94E8-7520A577AC84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25980305-A339-414F-94E8-7520A577AC84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C7B10C2-40E3-4152-A14C-5428199F7480}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C7B10C2-40E3-4152-A14C-5428199F7480}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C7B10C2-40E3-4152-A14C-5428199F7480}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C7B10C2-40E3-4152-A14C-5428199F7480}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7F36E02-7A4C-48D9-9806-123E75845AE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7F36E02-7A4C-48D9-9806-123E75845AE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7F36E02-7A4C-48D9-9806-123E75845AE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7F36E02-7A4C-48D9-9806-123E75845AE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33695E4F-4770-48CC-90BE-04F507D2E032}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33695E4F-4770-48CC-90BE-04F507D2E032}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33695E4F-4770-48CC-90BE-04F507D2E032}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33695E4F-4770-48CC-90BE-04F507D2E032}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DD7E655-978F-46DC-A7AD-EB6DB6A7737C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DD7E655-978F-46DC-A7AD-EB6DB6A7737C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DD7E655-978F-46DC-A7AD-EB6DB6A7737C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DD7E655-978F-46DC-A7AD-EB6DB6A7737C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF885690-5ECD-45CC-9C88-71BDFC73E39B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF885690-5ECD-45CC-9C88-71BDFC73E39B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF885690-5ECD-45CC-9C88-71BDFC73E39B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF885690-5ECD-45CC-9C88-71BDFC73E39B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F94A51B5-31D3-48DA-9936-8E813756524D}
+	EndGlobalSection
+EndGlobal
