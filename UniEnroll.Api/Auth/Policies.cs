@@ -42,4 +42,20 @@ public static class Policies
         public const string View = "report.view";
         public const string Export = "report.export";
     }
+
+    public static class Billing
+    {
+        public const string View    = "billing:view";
+        public const string Capture = "billing:capture";
+        public const string Refund  = "billing:refund";
+    }
+
+    public static class Scheduling
+    {
+        public const string Build             = "scheduling:build";
+        public const string AssignRoom        = "scheduling:assign-room";
+        public const string Optimize          = "scheduling:optimize";
+        public const string ViewConflicts     = "scheduling:view-conflicts";
+        public const string ViewStudentSchedule= "scheduling:view-student-schedule";
+    }
 }

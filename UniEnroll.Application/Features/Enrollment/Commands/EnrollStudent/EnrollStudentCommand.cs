@@ -5,7 +5,7 @@ using UniEnroll.Application.Abstractions;
 
 namespace UniEnroll.Application.Features.Enrollment.Commands.EnrollStudent;
 
-public sealed record EnrollStudentCommand(string TenantId, string SectionId, string StudentId, string? Reason) : IRequest<Result<string>>;
+public sealed record EnrollStudentCommand(string TenantId, Guid SectionId, string StudentId, string? Reason) : IRequest<Result<string>>;
 
 public sealed class EnrollStudentHandler : IRequestHandler<EnrollStudentCommand, Result<string>>
 {
@@ -16,7 +16,7 @@ public sealed class EnrollStudentHandler : IRequestHandler<EnrollStudentCommand,
     public async Task<Result<string>> Handle(EnrollStudentCommand request, CancellationToken ct)
     {
         var enrollmentId = _ids.NewId();
-        await _sql.EnrollOrWaitlistAsync(request.TenantId, request.SectionId, request.StudentId, enrollmentId, request.Reason, ct);
+        await _sql.EnrollAsync(request.SectionId, request.StudentId, "", ct);
         return Result<string>.Success(enrollmentId);
     }
 }

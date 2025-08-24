@@ -5,7 +5,15 @@ using UniEnroll.Application.Abstractions;
 
 namespace UniEnroll.Application.Features.Enrollment.Commands.DropEnrollment;
 
-public sealed record DropEnrollmentCommand(string TenantId, string EnrollmentId, string SectionId, byte[] RowVersion, string? Reason) : IRequest<Result<bool>>;
+public sealed record DropEnrollmentCommand() : IRequest<Result<bool>>
+{
+    //string TenantId, string EnrollmentId, string SectionId, byte[] RowVersion, string? Reason
+    public string TenantId { get; set; }
+    public Guid EnrollmentId { get; set; }
+    public string SectionId { get; set; }
+    public byte[] RowVersion { get; set; }
+    public string Reason { get; set; }
+};
 
 public sealed class DropEnrollmentHandler : IRequestHandler<DropEnrollmentCommand, Result<bool>>
 {
@@ -16,7 +24,7 @@ public sealed class DropEnrollmentHandler : IRequestHandler<DropEnrollmentComman
     public async Task<Result<bool>> Handle(DropEnrollmentCommand request, CancellationToken ct)
     {
         var actor = _me.UserId ?? "system";
-        await _sql.DropAsync(request.TenantId, request.EnrollmentId, request.SectionId, request.RowVersion, actor, request.Reason, ct);
+        await _sql.DropAsync(request.EnrollmentId, "", ct);
         return Result<bool>.Success(true);
     }
 }

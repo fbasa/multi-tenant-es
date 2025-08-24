@@ -1,11 +1,14 @@
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
+using UniEnroll.Application.Features.Enrollment.Commands.Common;
 
 namespace UniEnroll.Application.Abstractions;
 
 public interface IEnrollmentCommandRepository
 {
-    Task EnrollOrWaitlistAsync(string tenantId, string sectionId, string studentId, string enrollmentId, string? reason, CancellationToken ct = default);
-    Task DropAsync(string tenantId, string enrollmentId, string sectionId, byte[] rowVersion, string actorUserId, string? reason, CancellationToken ct = default);
+    Task<ReserveSeatResult> ReserveSeatAsync(Guid sectionId, string studentId, string? idempotencyKey, CancellationToken ct);
+    Task<EnrollSeatResult> EnrollAsync(Guid sectionId, string studentId, string? idempotencyKey, CancellationToken ct);
+    Task<DropResult> DropAsync(Guid enrollmentId, string? idempotencyKey, CancellationToken ct);
 }

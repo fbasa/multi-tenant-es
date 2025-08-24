@@ -22,6 +22,22 @@ public static class DependencyInjection
                 sql.EnableRetryOnFailure(maxRetryCount: 5, maxRetryDelay: TimeSpan.FromSeconds(5), errorNumbersToAdd: null);
                 sql.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery);
             });
+
+            /*
+            Note: If you wrap several operations in your own transaction, 
+            run them under the execution strategy so the whole unit can retry:
+
+            var strategy = db.Database.CreateExecutionStrategy();
+            await strategy.ExecuteAsync(async () =>
+            {
+                await using var tx = await db.Database.BeginTransactionAsync(ct);
+                // …multiple ops…
+                await db.SaveChangesAsync(ct);
+                await tx.CommitAsync(ct);
+            });
+
+            
+            */
         });
 
         services.AddScoped<IUnitOfWork, EfUnitOfWork>();
@@ -29,6 +45,13 @@ public static class DependencyInjection
         services.AddScoped<IPermissionService, EfPermissionService>();
         services.AddScoped(typeof(IQueryRepository<>), typeof(EfQueryRepository<>));
         services.AddScoped<IEnrollmentCommandRepository, SqlEnrollmentCommandRepository>();
+
+        services.AddScoped<IInstructorCommandRepository, InstructorCommandRepository>();
+        services.AddScoped<IRegistrarCommandRepository, RegistrarCommandRepository>();
+
+        services.AddScoped<IPaymentCommandRepository, PaymentCommandRepository>();
+        services.AddScoped<IPaymentQueryRepository, PaymentQueryRepository>();
+        services.AddScoped<ISchedulingRepository, SchedulingRepository>();
 
         return services;
     }

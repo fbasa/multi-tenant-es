@@ -1,10 +1,15 @@
 
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Asp.Versioning;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniEnroll.Api.Auth;
 using UniEnroll.Application.Features.Scheduling.Commands.AssignRoom;
 using UniEnroll.Application.Features.Scheduling.Commands.BuildTimetable;
+using UniEnroll.Application.Features.Scheduling.Commands.Common;
 using UniEnroll.Application.Features.Scheduling.Commands.OptimizeSchedule;
 using UniEnroll.Application.Features.Scheduling.Queries.GetStudentSchedule;
 using UniEnroll.Application.Features.Scheduling.Queries.ListRoomConflicts;
@@ -12,31 +17,56 @@ using UniEnroll.Contracts.Scheduling;
 
 namespace UniEnroll.Api.Controllers;
 
-public sealed class SchedulesController : BaseApiController
+[ApiController]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/schedules")]
+public sealed class SchedulesController : ControllerBase
 {
-    public SchedulesController(ISender sender) : base(sender) { }
+    private readonly IMediator _mediator;
+    public SchedulesController(IMediator mediator) => _mediator = mediator;
 
-    [HttpPost("{tenantId}/timetable/build")]
-    public async Task<IActionResult> Build([FromRoute] string tenantId, [FromBody] BuildTimetableCommand body, CancellationToken ct)
-        => Ok(await Sender.Send(body with { TenantId = tenantId }, ct));
+    [HttpPost("build")]
+    [Authorize(Policy = Policies.Scheduling.Build)]
+    public async Task<IActionResult> Build([FromBody] BuildTimetableRequest req, CancellationToken ct)
+    {
+        var result = await _mediator.Send(new BuildTimetableCommand(req.StudentId, req.TermId), ct);
+        return result.Value?.Outcome switch
+        {
+            SchedulingOutcome.Success => Ok(new { created = result.Value.EntriesCreated }), 
+            _ => StatusCode(409)
+        };
+    }
 
-    [HttpPost("{tenantId}/sections/{sectionId}/room")]
-    public async Task<IActionResult> AssignRoom([FromRoute] string tenantId, [FromRoute] string sectionId, [FromBody] AssignRoomCommand body, CancellationToken ct)
-        => Ok(await Sender.Send(body with { TenantId = tenantId, SectionId = sectionId }, ct));
+    [HttpPost("assign-room")]
+    [Authorize(Policy = Policies.Scheduling.AssignRoom)]
+    public async Task<IActionResult> AssignRoom([FromBody] AssignRoomRequest req, CancellationToken ct)
+    {
+        var result = await _mediator.Send(new AssignRoomCommand(req.SectionId, req.RoomCode), ct);
+        return result.Value?.Outcome switch
+        {
+            SchedulingOutcome.Success         => Ok(),
+            SchedulingOutcome.Conflict        => Conflict(new ProblemDetails { Title = "Room clash" }),
+            SchedulingOutcome.NotFound        => NotFound(),
+            SchedulingOutcome.ValidationFailed=> BadRequest(),
+            _ => StatusCode(409)
+        };
+    }
 
-    [HttpPost("{tenantId}/optimize")]
-    [Authorize(Policy = Policies.Registrar.OptimizeSchedule)]
-    public async Task<IActionResult> Optimize([FromRoute] string tenantId, [FromBody] OptimizeScheduleCommand body, CancellationToken ct)
-        => Ok(await Sender.Send(body with { TenantId = tenantId }, ct));
+    [HttpPost("optimize")]
+    [Authorize(Policy = Policies.Scheduling.Optimize)]
+    public async Task<IActionResult> Optimize([FromBody] OptimizeScheduleRequest req, CancellationToken ct)
+    {
+        var result = await _mediator.Send(new OptimizeScheduleCommand(req.TermId), ct);
+        return Ok(new { conflictsRecorded = result.Value?.ConflictsRecorded });
+    }
 
-    [HttpGet("{tenantId}/students/{studentId}/schedule")]
-    [Authorize(Policy = Policies.Student.Read)]
-    [ProducesResponseType(typeof(TimetableDto), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetStudentSchedule([FromRoute] string tenantId, [FromRoute] string studentId, [FromQuery] string termId, CancellationToken ct)
-        => Ok((await Sender.Send(new GetStudentScheduleQuery(tenantId, studentId, termId), ct)).Value);
+    [HttpGet("{studentId}/terms/{termId:guid}")]
+    [Authorize(Policy = Policies.Scheduling.ViewStudentSchedule)]
+    public async Task<IActionResult> GetStudentSchedule([FromRoute] string studentId, [FromRoute] Guid termId, CancellationToken ct)
+        => Ok((await _mediator.Send(new GetStudentScheduleQuery(studentId, termId), ct)).Value);
 
-    [HttpGet("{tenantId}/rooms/conflicts")]
-    [ProducesResponseType(typeof(IReadOnlyList<RoomConflictDto>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> ListRoomConflicts([FromRoute] string tenantId, [FromQuery] string termId, CancellationToken ct)
-        => Ok((await Sender.Send(new ListRoomConflictsQuery(tenantId, termId), ct)).Value);
+    [HttpGet("room-conflicts/{termId:guid}")]
+    [Authorize(Policy = Policies.Scheduling.ViewConflicts)]
+    public async Task<IActionResult> ListRoomConflicts([FromRoute] Guid termId, CancellationToken ct)
+        => Ok((await _mediator.Send(new ListRoomConflictsQuery(termId), ct)).Value);
 }

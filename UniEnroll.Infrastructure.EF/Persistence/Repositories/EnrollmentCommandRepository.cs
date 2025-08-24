@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using UniEnroll.Application.Abstractions;
+using UniEnroll.Application.Features.Enrollment.Commands.Common;
 using UniEnroll.Infrastructure.EF.Persistence.Sql;
 
 namespace UniEnroll.Infrastructure.EF.Persistence.Repositories;
@@ -23,5 +24,20 @@ public sealed class EnrollmentCommandRepository : IEnrollmentCommandRepository
         using var trx = await _ctx.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted, ct);
         await EnrollmentSql.DropAndPromoteAsync(_ctx, tenantId, enrollmentId, sectionId, rowVersion, actorUserId, reason, ct);
         await trx.CommitAsync(ct);
+    }
+
+    public Task<ReserveSeatResult> ReserveSeatAsync(Guid sectionId, string studentId, string? idempotencyKey, CancellationToken ct)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<EnrollSeatResult> EnrollAsync(Guid sectionId, string studentId, string? idempotencyKey, CancellationToken ct)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<DropResult> DropAsync(Guid enrollmentId, string? idempotencyKey, CancellationToken ct)
+    {
+        throw new NotImplementedException();
     }
 }

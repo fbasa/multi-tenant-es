@@ -42,6 +42,18 @@ public static class AuthorizationExtensions
             // Reporting
             o.AddPolicy(Policies.Reporting.View, p => p.Requirements.Add(new PermissionRequirement(Policies.Reporting.View)));
             o.AddPolicy(Policies.Reporting.Export, p => p.Requirements.Add(new PermissionRequirement(Policies.Reporting.Export)));
+        
+            // Billing
+            o.AddPolicy(Policies.Billing.View,    p => p.Requirements.Add(new PermissionRequirement(Policies.Billing.View)));
+            o.AddPolicy(Policies.Billing.Capture, p => p.Requirements.Add(new PermissionRequirement(Policies.Billing.Capture)));
+            o.AddPolicy(Policies.Billing.Refund,  p => p.Requirements.Add(new PermissionRequirement(Policies.Billing.Refund)));
+
+            // Scheduling
+            o.AddPolicy(Policies.Scheduling.Build,              p => p.Requirements.Add(new PermissionRequirement(Policies.Scheduling.Build)));
+            o.AddPolicy(Policies.Scheduling.AssignRoom,         p => p.Requirements.Add(new PermissionRequirement(Policies.Scheduling.AssignRoom)));
+            o.AddPolicy(Policies.Scheduling.Optimize,           p => p.Requirements.Add(new PermissionRequirement(Policies.Scheduling.Optimize)));
+            o.AddPolicy(Policies.Scheduling.ViewConflicts,      p => p.Requirements.Add(new PermissionRequirement(Policies.Scheduling.ViewConflicts)));
+            o.AddPolicy(Policies.Scheduling.ViewStudentSchedule,p => p.Requirements.Add(new PermissionRequirement(Policies.Scheduling.ViewStudentSchedule)));
         });
 
         services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();

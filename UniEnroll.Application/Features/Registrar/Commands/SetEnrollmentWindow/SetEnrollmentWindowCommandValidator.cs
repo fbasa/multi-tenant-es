@@ -7,7 +7,7 @@ public sealed class SetEnrollmentWindowCommandValidator : AbstractValidator<SetE
 {
     public SetEnrollmentWindowCommandValidator()
     {
-        RuleFor(x => x.TenantId).NotEmpty();
-        RuleFor(x => x.OpensAt).LessThan(x => x.ClosesAt);
+        //RuleFor(x => x.TermId).NotEmpty();
+        //RuleFor(x => x.StartAt).LessThan(x => x.EndAt);
     }
 }

@@ -7,8 +7,7 @@ public sealed class AssignInstructorToSectionCommandValidator : AbstractValidato
 {
     public AssignInstructorToSectionCommandValidator()
     {
-        RuleFor(x => x.TenantId).NotEmpty();
-        RuleFor(x => x.InstructorId).NotEmpty();
         RuleFor(x => x.SectionId).NotEmpty();
+        RuleFor(x => x.InstructorId).NotEmpty().MaximumLength(64);
     }
 }

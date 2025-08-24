@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using UniEnroll.Application.Abstractions;
+using UniEnroll.Application.Features.Enrollment.Commands.Common;
 using UniEnroll.Infrastructure.EF.Persistence;
 
 namespace UniEnroll.Infrastructure.EF.Enrollment;
@@ -115,5 +116,20 @@ COMMIT;";
             new SqlParameter("@reason", (object?)reason ?? (object)System.DBNull.Value)
         };
         await _db.Database.ExecuteSqlRawAsync(sql, p, ct);
+    }
+
+    public Task<ReserveSeatResult> ReserveSeatAsync(Guid sectionId, string studentId, string? idempotencyKey, CancellationToken ct)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<EnrollSeatResult> EnrollAsync(Guid sectionId, string studentId, string? idempotencyKey, CancellationToken ct)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<DropResult> DropAsync(Guid enrollmentId, string? idempotencyKey, CancellationToken ct)
+    {
+        throw new NotImplementedException();
     }
 }

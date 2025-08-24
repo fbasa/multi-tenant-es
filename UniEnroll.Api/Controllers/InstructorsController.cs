@@ -1,37 +1,60 @@
+
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniEnroll.Api.Auth;
+using UniEnroll.Application.Features.Instructors.Commands.Common;
 using UniEnroll.Application.Features.Instructors.Commands.AssignInstructorToSection;
 using UniEnroll.Application.Features.Instructors.Commands.UpsertInstructor;
-using UniEnroll.Application.Features.Instructors.Queries.GetInstructorById;
-using UniEnroll.Application.Features.Instructors.Queries.ListInstructorLoad;
 using UniEnroll.Contracts.Instructors;
+using Asp.Versioning;
 
 namespace UniEnroll.Api.Controllers;
 
-public sealed class InstructorsController : BaseApiController
+[ApiController]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/instructors")]
+public sealed class InstructorsController : ControllerBase
 {
-    public InstructorsController(ISender sender) : base(sender) { }
+    private readonly IMediator _mediator;
+    public InstructorsController(IMediator mediator) => _mediator = mediator;
 
-    [HttpPost("{tenantId}")]
-    [Authorize(Policy = Policies.Registrar.ManageInstructors)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Upsert([FromRoute] string tenantId, [FromBody] UpsertInstructorCommand body, CancellationToken ct)
-        => Ok((await Sender.Send(body with { TenantId = tenantId }, ct)).Value);
+    [HttpPost]
+    [Authorize(Policy = Policies.Instructor.ManageSections)]
+    public async Task<IActionResult> Upsert([FromBody] UpsertInstructorRequest req, CancellationToken ct)
+    {
+        var cmd = new UpsertInstructorCommand(req.InstructorId, req.FirstName, req.LastName, req.Email);
+        var r = await _mediator.Send(cmd, ct);
+        return r.Value.Outcome switch
+        {
+            InstructorOutcome.Inserted => CreatedAtAction(nameof(Get), new { id = req.InstructorId, version = "1.0" }, new { id = req.InstructorId }),
+            InstructorOutcome.Updated  => Ok(new { id = req.InstructorId }),
+            _ => StatusCode(409, new ProblemDetails { Title = "Concurrency conflict" })
+        };
+    }
 
-    [HttpPost("{tenantId}/{instructorId}/assign/{sectionId}")]
-    public async Task<IActionResult> Assign([FromRoute] string tenantId, [FromRoute] string instructorId, [FromRoute] string sectionId, CancellationToken ct)
-        => Ok(await Sender.Send(new AssignInstructorToSectionCommand(tenantId, instructorId, sectionId), ct));
-
-    [HttpGet("{tenantId}/{instructorId}")]
-    [ProducesResponseType(typeof(InstructorDto), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Get([FromRoute] string tenantId, [FromRoute] string instructorId, CancellationToken ct)
-        => Ok((await Sender.Send(new GetInstructorByIdQuery(tenantId, instructorId), ct)).Value);
-
-    [HttpGet("{tenantId}/{instructorId}/load")]
+    // Optional placeholder for lookup (not implemented here)
+    [HttpGet("{id}")]
     [Authorize(Policy = Policies.Instructor.ViewLoads)]
-    [ProducesResponseType(typeof(InstructorLoadDto), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Load([FromRoute] string tenantId, [FromRoute] string instructorId, CancellationToken ct)
-        => Ok((await Sender.Send(new ListInstructorLoadQuery(tenantId, instructorId), ct)).Value);
+    public IActionResult Get([FromRoute] string id) => Ok(new { id });
+
+    [HttpPost("{id}/assign-section")]
+    [Authorize(Policy = Policies.Instructor.ManageSections)]
+    public async Task<IActionResult> Assign([FromRoute] string id, [FromBody] AssignInstructorToSectionRequest req, CancellationToken ct)
+    {
+        if (req.InstructorId != null && req.InstructorId != id)
+            return BadRequest(new ProblemDetails { Title = "InstructorId mismatch" });
+
+        var r = await _mediator.Send(new AssignInstructorToSectionCommand(req.SectionId, id), ct);
+        return r.Value?.Outcome switch
+        {
+            InstructorOutcome.Assigned         => Ok(),
+            InstructorOutcome.ValidationFailed => Conflict(new ProblemDetails { Title = "Schedule conflict for instructor" }),
+            InstructorOutcome.NotFound         => NotFound(),
+            _                                  => StatusCode(409, new ProblemDetails { Title = "Concurrency conflict" })
+        };
+    }
 }

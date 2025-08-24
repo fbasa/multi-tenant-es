@@ -29,7 +29,7 @@ public static class DependencyInjection
         services.AddScoped<ITenantContext, TenantContext>();
         services.AddSingleton<IDateTimeProvider, SystemClock>();
         services.AddSingleton<IIdGenerator, IdGenerator>();
-
+     
         // Idempotency
         services.AddSingleton<IIdempotencyStore, InMemoryIdempotencyStore>();
 

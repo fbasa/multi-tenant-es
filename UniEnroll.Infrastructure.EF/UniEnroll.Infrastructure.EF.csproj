@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Sql\" />
     <Folder Include="Persistence\Security\" />
   </ItemGroup>
 

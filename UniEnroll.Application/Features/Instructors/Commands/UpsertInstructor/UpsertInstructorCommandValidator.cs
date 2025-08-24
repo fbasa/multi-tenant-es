@@ -7,10 +7,9 @@ public sealed class UpsertInstructorCommandValidator : AbstractValidator<UpsertI
 {
     public UpsertInstructorCommandValidator()
     {
-        RuleFor(x => x.TenantId).NotEmpty();
+        RuleFor(x => x.InstructorId).NotEmpty().MaximumLength(64);
         RuleFor(x => x.FirstName).NotEmpty().MaximumLength(64);
         RuleFor(x => x.LastName).NotEmpty().MaximumLength(64);
-        RuleFor(x => x.Email).NotEmpty().EmailAddress();
-        RuleFor(x => x.Department).NotEmpty();
+        RuleFor(x => x.Email).NotEmpty().EmailAddress().MaximumLength(256);
     }
 }

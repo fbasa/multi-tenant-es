@@ -1,13 +1,12 @@
 
 using MediatR;
+using System;
 using UniEnroll.Application.Common;
+using UniEnroll.Application.Features.Registrar.Commands.Common;
+using UniEnroll.Contracts.Registrar;
 
 namespace UniEnroll.Application.Features.Registrar.Commands.UpsertTerm;
 
-public sealed record UpsertTermCommand(string TenantId, string? Id, string YearTermCode, string Status) : IRequest<Result<string>>;
-
-public sealed class UpsertTermHandler : IRequestHandler<UpsertTermCommand, Result<string>>
-{
-    public Task<Result<string>> Handle(UpsertTermCommand request, CancellationToken ct)
-        => Task.FromResult(Result<string>.Success(request.Id ?? $"term-{Guid.NewGuid():N}"));
-}
+public sealed record UpsertTermCommand(
+    UpsertTermRequest Request
+) : IRequest<Result<UpsertTermResult>>;

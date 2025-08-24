@@ -1,31 +1,61 @@
+
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniEnroll.Api.Auth;
+using UniEnroll.Application.Features.Payments.Commands.Common;
 using UniEnroll.Application.Features.Payments.Commands.CapturePayment;
 using UniEnroll.Application.Features.Payments.Commands.RefundPayment;
 using UniEnroll.Application.Features.Payments.Queries.GetPaymentStatus;
 using UniEnroll.Contracts.Payments;
+using Asp.Versioning;
 
 namespace UniEnroll.Api.Controllers;
 
-public sealed class PaymentsController : BaseApiController
+[ApiController]
+[ApiVersion("1.0")]
+[Route("api/v{version:apiVersion}/payments")]
+public sealed class PaymentsController : ControllerBase
 {
-    public PaymentsController(ISender sender) : base(sender) { }
+    private readonly IMediator _mediator;
+    public PaymentsController(IMediator mediator) => _mediator = mediator;
 
-    [HttpPost("{tenantId}/capture")]
-    [Authorize(Policy = Policies.Student.Pay)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Capture([FromRoute] string tenantId, [FromBody] CapturePaymentCommand body, CancellationToken ct)
-        => Ok((await Sender.Send(body with { TenantId = tenantId }, ct)).Value);
+    [HttpPost("capture")]
+    [Authorize(Policy = Policies.Billing.Capture)]
+    public async Task<IActionResult> Capture([FromBody] CapturePaymentRequest req, CancellationToken ct)
+    {
+        var r = await _mediator.Send(new CapturePaymentCommand(req), ct);
+        return r.Value.Outcome switch
+        {
+            PaymentOutcome.Captured        => Ok(new { paymentId = r.Value.PaymentId }),
+            PaymentOutcome.AlreadyCaptured => Ok(new { paymentId = r.Value.PaymentId }),
+            PaymentOutcome.NotFound        => NotFound(),
+            _                              => StatusCode(409, new ProblemDetails { Title = "Payment conflict" })
+        };
+    }
 
-    [HttpPost("{tenantId}/{paymentId}/refund")]
-    public async Task<IActionResult> Refund([FromRoute] string tenantId, [FromRoute] string paymentId, CancellationToken ct)
-        => Ok(await Sender.Send(new RefundPaymentCommand(tenantId, paymentId), ct));
+    [HttpPost("{paymentId:guid}/refund")]
+    [Authorize(Policy = Policies.Billing.Refund)]
+    public async Task<IActionResult> Refund([FromRoute] Guid paymentId, [FromBody] RefundPaymentRequest req, CancellationToken ct)
+    {
+        if (paymentId != req.PaymentId) return BadRequest(new ProblemDetails { Title = "PaymentId mismatch" });
+        var r = await _mediator.Send(new RefundPaymentCommand(req), ct);
+        return r.Value?.Outcome switch
+        {
+            PaymentOutcome.Refunded => Ok(new { refundPaymentId = r.Value.RefundPaymentId }),
+            PaymentOutcome.NotFound => NotFound(),
+            _                       => StatusCode(409, new ProblemDetails { Title = "Refund conflict" })
+        };
+    }
 
-    [HttpGet("{tenantId}/{paymentId}")]
-    [Authorize(Policy = Policies.Student.ViewLedger)]
-    [ProducesResponseType(typeof(PaymentDto), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Status([FromRoute] string tenantId, [FromRoute] string paymentId, CancellationToken ct)
-        => Ok((await Sender.Send(new GetPaymentStatusQuery(tenantId, paymentId), ct)).Value);
+    [HttpGet("{paymentId:guid}")]
+    [Authorize(Policy = Policies.Billing.View)]
+    public async Task<IActionResult> GetStatus([FromRoute] Guid paymentId, CancellationToken ct)
+    {
+        var r = await _mediator.Send(new GetPaymentStatusQuery(paymentId), ct);
+        return r.Value is null ? NotFound() : Ok(r.Value);
+    }
 }

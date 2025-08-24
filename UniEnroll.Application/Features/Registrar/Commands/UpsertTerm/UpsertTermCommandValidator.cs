@@ -1,5 +1,6 @@
 
 using FluentValidation;
+using System;
 
 namespace UniEnroll.Application.Features.Registrar.Commands.UpsertTerm;
 
@@ -7,8 +8,9 @@ public sealed class UpsertTermCommandValidator : AbstractValidator<UpsertTermCom
 {
     public UpsertTermCommandValidator()
     {
-        RuleFor(x => x.TenantId).NotEmpty();
-        RuleFor(x => x.YearTermCode).NotEmpty().MaximumLength(16);
-        RuleFor(x => x.Status).NotEmpty();
+        //RuleFor(x => x.TermId).NotEmpty();
+        //RuleFor(x => x.Code).NotEmpty().MaximumLength(32);
+        //RuleFor(x => x.Name).NotEmpty().MaximumLength(128);
+        //RuleFor(x => x.StartDate).LessThan(x => x.EndDate);
     }
 }
