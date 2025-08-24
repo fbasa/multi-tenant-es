@@ -14,7 +14,7 @@ public sealed class LoggingBehavior<TRequest, TResponse> : IPipelineBehavior<TRe
         var response = await next();
         sw.Stop();
         // minimal no-op logging (hook a logger in a real app)
-        //var corr = LoggingSafeLogEnricher.GetCorrelationId();
+        //var corr = SafeLogEnricher.GetCorrelationId();
         //System.Diagnostics.Debug.WriteLine($"[{corr}] {typeof(TRequest).Name} handled in {sw.ElapsedMilliseconds}ms");    //TODO:
         return response;
     }

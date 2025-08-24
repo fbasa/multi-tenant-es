@@ -21,7 +21,11 @@ public sealed class TenantResolutionMiddleware
         ILogger<TenantResolutionMiddleware> logger,
         UniEnroll.Api.Support.EfTenantSetter efSetter)
     {
-        _next = next; _resolver = resolver; _tenantContext = tenantContext; _logger = logger; _efSetter = efSetter;
+        _next = next; 
+        _resolver = resolver; 
+        _tenantContext = tenantContext; 
+        _logger = logger; 
+        _efSetter = efSetter;
     }
 
     public async Task Invoke(HttpContext context)
@@ -30,7 +34,7 @@ public sealed class TenantResolutionMiddleware
         if (!string.IsNullOrWhiteSpace(tid))
         {
             context.Items["TenantId"] = tid;
-            (_tenantContext as UniEnroll.Infrastructure.Common.Tenancy.TenantContext)!.TenantId = tid;
+            (_tenantContext as TenantContext)!.TenantId = tid;
             _efSetter.SetCurrentTenantId(tid); // set EF static holder
         }
         else

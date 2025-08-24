@@ -3,10 +3,13 @@ using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 using UniEnroll.Api.Middleware;
 using UniEnroll.Api.Support;
+using UniEnroll.Application;
 using UniEnroll.Application.Common;
 using UniEnroll.Infrastructure.Common;
 using UniEnroll.Infrastructure.EF;
 using UniEnroll.Observability;
+using UniEnroll.Messaging;
+using UniEnroll.Reporting;
 
 namespace UniEnroll.Api.Configuration;
 
@@ -34,33 +37,15 @@ public static class DependencyInjection
                 o.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
             });
 
-        services.AddApiVersioningExtensions()
+        services.AddApiVersioningExtensions()           // Versioning
                 .AddProblemDetailsExtensions()          // RFC7807 + correlationId
-                .AddCorsExtensions(config)
-                .AddSwaggerExtensions()
-                .AddAuthenticationExtensions(config)
-                .AddAuthorizationExtensions()
-                .AddHealthChecksExtensins()
-                .AddRateLimitingExtensions(config)
-                .AddDataProtectionExtensions(config)
-
-        // Swagger
-        .AddEndpointsApiExplorer()
-        .AddSwaggerGen(c =>
-        {
-            c.SwaggerDoc("v1", new OpenApiInfo { Title = "UniEnroll API", Version = "v1" });
-        })
-
-        // CORS
-        .AddCors(opt =>
-        {
-            opt.AddDefaultPolicy(p => p
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .WithOrigins(config["Cors:Origins"]?.Split(';', StringSplitOptions.RemoveEmptyEntries) ?? new[] { "https://localhost" })
-                .AllowCredentials());
-        })
-
+                .AddCorsExtensions(config)              // CORS
+                .AddSwaggerExtensions()                 // Swagger
+                .AddAuthenticationExtensions(config)    // Authentication
+                .AddAuthorizationExtensions()           // Authorization
+                .AddHealthChecksExtensins()             // HealthCheck
+                .AddRateLimitingExtensions(config)      // Rate Limiting
+                .AddDataProtectionExtensions(config)    // Data protection
 
         // Filters / behaviors (ModelState → ProblemDetails)
         .Configure<ApiBehaviorOptions>(o =>
@@ -69,18 +54,26 @@ public static class DependencyInjection
         })
 
         // Helper for EF tenant filter
-        .AddSingleton<EfTenantSetter>();
+        .AddSingleton<EfTenantSetter>()
+
+        // MediatR / Automapper / Pipeline behaviors i.e. ValidationBehavior,LoggingBehavior,TransactionBehavior,IdempotencyBehavior
+        .AddApplication()
+
+        .AddMessaging(config)
+
+        .AddReporting(config);
 
         return services;
     }
   
     public static IApplicationBuilder UseApiCore(this IApplicationBuilder app, bool dev)
     {
+        app.UseCors();
+
         app.UseMiddleware<CorrelationIdMiddleware>();          // set correlationId very first
         app.UseMiddleware<ExceptionHandlingMiddleware>();      // <== NOW IT'S USED (wraps everything below)
         app.UseMiddleware<RequestLoggingMiddleware>();         // or your RequestLoggingMiddleware (pick one)
 
-        app.UseCors();
         app.UseRateLimiter();
 
         app.UseMiddleware<TenantResolutionMiddleware>();

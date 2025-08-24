@@ -11,7 +11,11 @@ public sealed class CompositeTenantResolver : ITenantResolver
     private readonly TenantCache _cache;
 
     public CompositeTenantResolver(HeaderTenantResolver header, SubdomainTenantResolver sub, TenantCache cache)
-    { _header = header; _sub = sub; _cache = cache; }
+    { 
+        _header = header; 
+        _sub = sub; 
+        _cache = cache; 
+    }
 
     public async Task<string?> ResolveAsync(HttpContext context)
     {

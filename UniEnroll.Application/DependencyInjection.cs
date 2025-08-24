@@ -13,25 +13,22 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        //var asm = Assembly.GetExecutingAssembly();
-        //services.AddMediatR(asm);
-        //services.AddValidatorsFromAssembly(asm, includeInternalTypes: true);
-        //services.AddAutoMapper(asm);
-
         services.AddMediatR(cfg =>
         {
             cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-        });
-        services.AddSingleton(sp => new MapperConfiguration(config =>
+        })
+
+        .AddSingleton(sp => new MapperConfiguration(config =>
         {
             config.AddProfile<ApplicationMappingConfig>();
-        }, sp.GetRequiredService<ILoggerFactory>()).CreateMapper());
+        }, sp.GetRequiredService<ILoggerFactory>()).CreateMapper())
 
         // Pipeline behaviors (ordered)
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehavior<,>));
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(IdempotencyBehavior<,>));
+        .AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>))
+        .AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>))
+        .AddTransient(typeof(IPipelineBehavior<,>), typeof(TransactionBehavior<,>))
+        .AddTransient(typeof(IPipelineBehavior<,>), typeof(IdempotencyBehavior<,>));
+
         return services;
     }
 }

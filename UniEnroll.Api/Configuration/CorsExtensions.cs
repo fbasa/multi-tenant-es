@@ -11,8 +11,13 @@ public static class CorsExtensions
         services.AddCors(opt =>
         {
             var origins = (config["Cors:Origins"] ?? "https://localhost").Split(';', System.StringSplitOptions.RemoveEmptyEntries);
-            opt.AddDefaultPolicy(p => p.AllowAnyHeader().AllowAnyMethod().WithOrigins(origins).AllowCredentials());
+            opt.AddDefaultPolicy(p => p
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .WithOrigins(origins)
+                .AllowCredentials());
         });
+
         return services;
     }
 }

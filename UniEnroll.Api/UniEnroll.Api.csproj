@@ -35,7 +35,9 @@
     <ProjectReference Include="..\UniEnroll.Domain\UniEnroll.Domain.csproj" />
     <ProjectReference Include="..\UniEnroll.Infrastructure.Common\UniEnroll.Infrastructure.Common.csproj" />
     <ProjectReference Include="..\UniEnroll.Infrastructure.EF\UniEnroll.Infrastructure.EF.csproj" />
+    <ProjectReference Include="..\UniEnroll.Messaging\UniEnroll.Messaging.csproj" />
     <ProjectReference Include="..\UniEnroll.Observability\UniEnroll.Observability.csproj" />
+    <ProjectReference Include="..\UniEnroll.Reporting\UniEnroll.Reporting.csproj" />
   </ItemGroup>
 
 </Project>
