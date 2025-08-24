@@ -1,12 +1,8 @@
-using System;
-using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using UniEnroll.Domain.Students;
 using UniEnroll.Domain.Courses;
-using UniEnroll.Domain.Sections;
-using UniEnroll.Domain.Enrollment;
-using UniEnroll.Domain.Admissions;
 using UniEnroll.Domain.Identity;
+using UniEnroll.Domain.Sections;
+using UniEnroll.Domain.Students;
 
 namespace UniEnroll.Infrastructure.EF.Persistence;
 
