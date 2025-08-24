@@ -1,5 +1,7 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using UniEnroll.Api.Auth;
 using UniEnroll.Application.Features.Registrar.Commands.ApproveGradeSubmission;
 using UniEnroll.Application.Features.Registrar.Commands.ClearHold;
 using UniEnroll.Application.Features.Registrar.Commands.PlaceHold;
@@ -19,19 +21,23 @@ public sealed class RegistrarController : BaseApiController
     public RegistrarController(ISender sender) : base(sender) { }
 
     [HttpPost("{tenantId}/terms")]
+    [Authorize(Policy = Policies.Registrar.ManageTerms)]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     public async Task<IActionResult> UpsertTerm([FromRoute] string tenantId, [FromBody] UpsertTermCommand body, CancellationToken ct)
         => Ok((await Sender.Send(body with { TenantId = tenantId }, ct)).Value);
 
     [HttpPost("{tenantId}/publish-catalog")]
+    [Authorize(Policy = Policies.Registrar.PublishCatalog)]
     public async Task<IActionResult> PublishCatalog([FromRoute] string tenantId, CancellationToken ct)
         => Ok(await Sender.Send(new PublishCourseCatalogCommand(tenantId), ct));
 
     [HttpPost("{tenantId}/enrollment-window")]
+    [Authorize(Policy = Policies.Registrar.ManageEnrollmentWindows)]
     public async Task<IActionResult> SetEnrollmentWindow([FromRoute] string tenantId, [FromBody] SetEnrollmentWindowCommand body, CancellationToken ct)
         => Ok(await Sender.Send(body with { TenantId = tenantId }, ct));
 
     [HttpPost("{tenantId}/holds")]
+    [Authorize(Policy = Policies.Registrar.ManageHolds)]
     [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
     public async Task<IActionResult> PlaceHold([FromRoute] string tenantId, [FromBody] PlaceHoldCommand body, CancellationToken ct)
         => Ok((await Sender.Send(body with { TenantId = tenantId }, ct)).Value);
@@ -45,6 +51,7 @@ public sealed class RegistrarController : BaseApiController
         => Ok(await Sender.Send(new ApproveGradeSubmissionCommand(tenantId, enrollmentId), ct));
 
     [HttpPost("{tenantId}/students/{studentId}/graduation-audit")]
+    [Authorize(Policy = Policies.Registrar.ManageHolds)]
     public async Task<IActionResult> RunGradAudit([FromRoute] string tenantId, [FromRoute] string studentId, CancellationToken ct)
         => Ok(await Sender.Send(new RunGraduationAuditCommand(tenantId, studentId), ct));
 

@@ -8,7 +8,7 @@ namespace UniEnroll.Api.Configuration;
 
 public static class RateLimitingExtensions
 {
-    public static IServiceCollection AddRateLimiting(this IServiceCollection services, IConfiguration config)
+    public static IServiceCollection AddRateLimitingExtensions(this IServiceCollection services, IConfiguration config)
     {
         services.AddRateLimiter(_ => _.AddFixedWindowLimiter("fixed", opt =>
         {

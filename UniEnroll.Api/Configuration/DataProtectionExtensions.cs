@@ -7,7 +7,7 @@ namespace UniEnroll.Api.Configuration;
 
 public static class DataProtectionExtensions
 {
-    public static IServiceCollection AddDataProtectionKeys(this IServiceCollection services, IConfiguration config)
+    public static IServiceCollection AddDataProtectionExtensions(this IServiceCollection services, IConfiguration config)
     {
         var persistPath = config["DataProtection:PersistPath"];
         var b = services.AddDataProtection();

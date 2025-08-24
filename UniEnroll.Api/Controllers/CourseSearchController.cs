@@ -1,5 +1,7 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using UniEnroll.Api.Auth;
 using UniEnroll.Application.Features.CourseSearch.Queries.SearchCourses;
 using UniEnroll.Contracts.CourseSearch;
 
@@ -16,4 +18,9 @@ public sealed class CourseSearchController : BaseApiController
         var req = new CourseSearchRequest(tenantId, keyword, department, instructorId, dayFilter, timeFrom, timeTo, pageSize, next, prev);
         return Ok((await Sender.Send(new SearchCoursesQuery(req), ct)).Value);
     }
+
+    //TODO:
+    [HttpPost("{tenantId}")]
+    [Authorize(Policy = Policies.Registrar.ManageCatalog)]
+    public Task<IActionResult> Create(/*…*/) => null;
 }

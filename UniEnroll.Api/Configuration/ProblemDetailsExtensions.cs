@@ -10,46 +10,32 @@ namespace UniEnroll.Api.Configuration;
 
 public static class ProblemDetailsExtensions
 {
-    public static IServiceCollection AddProblemDetailsWithCorrelation(this IServiceCollection services)
+    // Registers options + sensible defaults
+    public static IServiceCollection AddProblemDetailsExtensions(this IServiceCollection services)
     {
         services.AddProblemDetails();
+
+        services.AddOptions<ProblemDetailsMappingOptions>()
+            .PostConfigure(o =>
+            {
+                o.TypeToStatus[typeof(FluentValidation.ValidationException)] = StatusCodes.Status400BadRequest;
+                // Defaults (override with MapProblemDetailsExceptions below)
+                o.TypeToStatus[typeof(ArgumentException)] = StatusCodes.Status400BadRequest;
+                o.TypeToStatus[typeof(UnauthorizedAccessException)] = StatusCodes.Status401Unauthorized;
+                o.TypeToStatus[typeof(KeyNotFoundException)] = StatusCodes.Status404NotFound;
+                o.TypeToStatus[typeof(InvalidOperationException)] = StatusCodes.Status409Conflict; // generic “conflict”
+#if NET8_0_OR_GREATER
+                o.TypeToStatus[typeof(Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException)] = StatusCodes.Status409Conflict;
+#endif
+            });
+
         return services;
     }
+}
 
-    public static IApplicationBuilder UseExceptionHandling(this IApplicationBuilder app)
-    {
-        app.UseExceptionHandler(appBuilder =>
-        {
-            appBuilder.Run(async ctx =>
-            {
-                ctx.Response.ContentType = "application/problem+json";
-                var ex = ctx.Features.Get<IExceptionHandlerFeature>()?.Error;
-                var problem = ex switch
-                {
-                    ValidationException v => new ProblemDetails
-                    {
-                        Status = StatusCodes.Status400BadRequest,
-                        Title = "Validation failed",
-                        Detail = string.Join("; ", v.Errors.Select(e => e.ErrorMessage))
-                    },
-                    DbUpdateConcurrencyException => new ProblemDetails
-                    {
-                        Status = StatusCodes.Status409Conflict,
-                        Title = "Concurrency conflict",
-                        Detail = "The resource was modified by another request."
-                    },
-                    _ => new ProblemDetails
-                    {
-                        Status = StatusCodes.Status500InternalServerError,
-                        Title = "Internal Server Error",
-                        Detail = "An unexpected error occurred."
-                    }
-                };
-                problem.Extensions["correlationId"] = ctx.Items.TryGetValue("X-Correlation-Id", out var corr) ? corr : null;
-                ctx.Response.StatusCode = problem.Status ?? StatusCodes.Status500InternalServerError;
-                await ctx.Response.WriteAsJsonAsync(problem);
-            });
-        });
-        return app;
-    }
+// Simple options bag the middleware can read
+public sealed class ProblemDetailsMappingOptions
+{
+    public Dictionary<Type, int> TypeToStatus { get; } = new();
+    public bool IncludeExceptionDetails { get; set; } = false;
 }

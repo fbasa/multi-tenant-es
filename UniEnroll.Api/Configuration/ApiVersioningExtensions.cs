@@ -5,7 +5,7 @@ namespace UniEnroll.Api.Configuration;
 
 public static class ApiVersioningExtensions
 {
-    public static IServiceCollection AddApiVersioningV1(this IServiceCollection services)
+    public static IServiceCollection AddApiVersioningExtensions(this IServiceCollection services)
     {
         services
             .AddApiVersioning(o =>

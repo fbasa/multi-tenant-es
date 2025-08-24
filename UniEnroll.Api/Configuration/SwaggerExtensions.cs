@@ -6,7 +6,7 @@ namespace UniEnroll.Api.Configuration;
 
 public static class SwaggerExtensions
 {
-    public static IServiceCollection AddSwaggerDocs(this IServiceCollection services)
+    public static IServiceCollection AddSwaggerExtensions(this IServiceCollection services)
     {
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(c =>

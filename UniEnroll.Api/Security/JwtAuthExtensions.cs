@@ -7,9 +7,10 @@ using UniEnroll.Infrastructure.Common.Options;
 
 namespace UniEnroll.Api.Security;
 
+//NOT USED
 public static class JwtAuthExtensions
 {
-    public static void AddJwt(IServiceCollection services, IConfiguration config)
+    public static void AddJwt(this IServiceCollection services, IConfiguration config)
     {
         var jwt = new JwtOptions();
         config.GetSection("Jwt").Bind(jwt);

@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace UniEnroll.Api.Controllers;
 
 [ApiController]
-[Authorize]
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/[controller]")]
 public abstract class BaseApiController : ControllerBase

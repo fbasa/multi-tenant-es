@@ -6,7 +6,7 @@ namespace UniEnroll.Api.Configuration;
 
 public static class CorsExtensions
 {
-    public static IServiceCollection AddCorsPolicy(this IServiceCollection services, IConfiguration config)
+    public static IServiceCollection AddCorsExtensions(this IServiceCollection services, IConfiguration config)
     {
         services.AddCors(opt =>
         {

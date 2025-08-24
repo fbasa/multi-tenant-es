@@ -1,6 +1,8 @@
 
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using UniEnroll.Api.Auth;
 using UniEnroll.Application.Features.Reporting.Queries.EnrollmentReport;
 using UniEnroll.Application.Features.Reporting.Queries.InstructorLoadReport;
 using UniEnroll.Application.Features.Reporting.Queries.RetentionCohortReport;
@@ -9,6 +11,7 @@ using UniEnroll.Contracts.Reporting;
 
 namespace UniEnroll.Api.Controllers;
 
+[Authorize(Policy = Policies.Reporting.View)]
 public sealed class ReportingController : BaseApiController
 {
     public ReportingController(ISender sender) : base(sender) { }

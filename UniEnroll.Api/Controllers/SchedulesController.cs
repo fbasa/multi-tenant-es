@@ -1,6 +1,8 @@
 
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using UniEnroll.Api.Auth;
 using UniEnroll.Application.Features.Scheduling.Commands.AssignRoom;
 using UniEnroll.Application.Features.Scheduling.Commands.BuildTimetable;
 using UniEnroll.Application.Features.Scheduling.Commands.OptimizeSchedule;
@@ -23,10 +25,12 @@ public sealed class SchedulesController : BaseApiController
         => Ok(await Sender.Send(body with { TenantId = tenantId, SectionId = sectionId }, ct));
 
     [HttpPost("{tenantId}/optimize")]
+    [Authorize(Policy = Policies.Registrar.OptimizeSchedule)]
     public async Task<IActionResult> Optimize([FromRoute] string tenantId, [FromBody] OptimizeScheduleCommand body, CancellationToken ct)
         => Ok(await Sender.Send(body with { TenantId = tenantId }, ct));
 
     [HttpGet("{tenantId}/students/{studentId}/schedule")]
+    [Authorize(Policy = Policies.Student.Read)]
     [ProducesResponseType(typeof(TimetableDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetStudentSchedule([FromRoute] string tenantId, [FromRoute] string studentId, [FromQuery] string termId, CancellationToken ct)
         => Ok((await Sender.Send(new GetStudentScheduleQuery(tenantId, studentId, termId), ct)).Value);

@@ -10,7 +10,7 @@ namespace UniEnroll.Api.Configuration;
 
 public static class AuthenticationExtensions
 {
-    public static IServiceCollection AddAuth(this IServiceCollection services, IConfiguration config)
+    public static IServiceCollection AddAuthenticationExtensions(this IServiceCollection services, IConfiguration config)
     {
         var jwt = new JwtOptions();
         config.GetSection("Jwt").Bind(jwt);
