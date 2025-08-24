@@ -4,6 +4,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using UniEnroll.Application.Abstractions;
 using UniEnroll.Infrastructure.Common.Security;
+using UniEnroll.Infrastructure.EF.Sql;
 
 namespace UniEnroll.Infrastructure.EF.Security;
 
@@ -15,17 +16,12 @@ public sealed class EfAuthService : IAuthService
 
     public async Task<AuthResult?> AuthenticateAsync(string tenantId, string email, string password, CancellationToken ct = default)
     {
-        const string sql = @"
-SELECT TOP (1) u.Id, u.Email, u.TenantId, u.PasswordHash, u.PasswordSalt
-FROM Users u
-WHERE u.Email = @email AND u.TenantId = @tenant;";
-
         await using var conn = new SqlConnection(_cs);
         await conn.OpenAsync(ct);
-        await using var cmd = new SqlCommand(sql, conn);
+
+        await using var cmd = new SqlCommand(IdentitySql.SelectUserByEmailTenant, conn);
         cmd.Parameters.Add(new SqlParameter("@email", SqlDbType.NVarChar, 256){ Value = email });
         cmd.Parameters.Add(new SqlParameter("@tenant", SqlDbType.NVarChar, 64){ Value = tenantId });
-
         await using var rdr = await cmd.ExecuteReaderAsync(ct);
         if (!await rdr.ReadAsync(ct)) return null;
 
@@ -38,13 +34,12 @@ WHERE u.Email = @email AND u.TenantId = @tenant;";
         if (!PasswordHasher.Verify(password, hash, salt))
             return null;
 
-        // Load roles
-        const string rolesSql = @"SELECT ur.RoleId FROM UserRoles ur WHERE ur.UserId = @userId";
         var roles = new List<string>();
-        await using (var cmdRoles = new SqlCommand(rolesSql, conn))
+        await rdr.CloseAsync();
+        await using (var rcmd = new SqlCommand(IdentitySql.SelectRolesByUser, conn))
         {
-            cmdRoles.Parameters.Add(new SqlParameter("@userId", SqlDbType.NVarChar, 64){ Value = userId });
-            await using var rr = await cmdRoles.ExecuteReaderAsync(ct);
+            rcmd.Parameters.Add(new SqlParameter("@userId", SqlDbType.NVarChar, 64){ Value = userId });
+            await using var rr = await rcmd.ExecuteReaderAsync(ct);
             while (await rr.ReadAsync(ct)) roles.Add(rr.GetString(0));
         }
 

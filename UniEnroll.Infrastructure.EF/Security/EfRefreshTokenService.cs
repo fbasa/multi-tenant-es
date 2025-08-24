@@ -9,12 +9,10 @@ using Microsoft.Extensions.Options;
 using UniEnroll.Application.Abstractions;
 using UniEnroll.Infrastructure.Common.Options;
 using UniEnroll.Infrastructure.Common.Security;
+using UniEnroll.Infrastructure.EF.Sql;
 
 namespace UniEnroll.Infrastructure.EF.Security;
 
-/// <summary>
-/// ADO.NET implementation with rotating, revocable refresh tokens (hashed at rest).
-/// </summary>
 public sealed class EfRefreshTokenService : IRefreshTokenService
 {
     private readonly string _cs;
@@ -33,37 +31,13 @@ public sealed class EfRefreshTokenService : IRefreshTokenService
         var now = DateTimeOffset.UtcNow;
         var expires = now.AddDays(_opts.Days);
 
-        const string ensure = @"
-IF OBJECT_ID('RefreshTokens','U') IS NULL
-BEGIN
-  CREATE TABLE RefreshTokens(
-    Id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY DEFAULT NEWID(),
-    TenantId NVARCHAR(64) NOT NULL,
-    UserId NVARCHAR(64) NOT NULL,
-    TokenHash VARBINARY(32) NOT NULL UNIQUE,
-    DeviceId NVARCHAR(128) NULL,
-    ExpiresAt DATETIMEOFFSET(7) NOT NULL,
-    CreatedAt DATETIMEOFFSET(7) NOT NULL,
-    CreatedByIp NVARCHAR(64) NULL,
-    RevokedAt DATETIMEOFFSET(7) NULL,
-    RevokedByIp NVARCHAR(64) NULL,
-    ReasonRevoked NVARCHAR(128) NULL,
-    ReplacedByTokenId UNIQUEIDENTIFIER NULL
-  );
-  CREATE INDEX IX_RefreshTokens_User ON RefreshTokens(UserId);
-END";
-
-        const string insert = @"
-INSERT INTO RefreshTokens (TenantId, UserId, TokenHash, DeviceId, ExpiresAt, CreatedAt, CreatedByIp)
-VALUES (@t, @u, @h, @d, @exp, @now, @ip);
-";
-
         await using var conn = new SqlConnection(_cs);
         await conn.OpenAsync(ct);
-        await using (var cmdEnsure = new SqlCommand(ensure, conn))
-        { await cmdEnsure.ExecuteNonQueryAsync(ct); }
 
-        await using (var cmd = new SqlCommand(insert, conn))
+        await using (var ensure = new SqlCommand(RefreshTokenSql.EnsureTable, conn))
+        { await ensure.ExecuteNonQueryAsync(ct); }
+
+        await using (var cmd = new SqlCommand(RefreshTokenSql.Insert, conn))
         {
             cmd.Parameters.Add(new SqlParameter("@t", SqlDbType.NVarChar, 64){ Value = tenantId });
             cmd.Parameters.Add(new SqlParameter("@u", SqlDbType.NVarChar, 64){ Value = userId });
@@ -82,33 +56,31 @@ VALUES (@t, @u, @h, @d, @exp, @now, @ip);
     {
         var hash = TokenHasher.Sha256(token);
 
-        const string select = @"
-SELECT TOP (1) Id, TenantId, UserId, DeviceId, ExpiresAt, RevokedAt, ReplacedByTokenId
-FROM RefreshTokens WHERE TokenHash = @h;";
-
         await using var conn = new SqlConnection(_cs);
         await conn.OpenAsync(ct);
 
         Guid id;
-        string tenantId, userId;
+        string tenantId;
+        string userId;
         string? dbDevice;
         DateTimeOffset expiresAt;
         DateTimeOffset? revokedAt;
         Guid? replacedBy;
-        await using (var get = new SqlCommand(select, conn))
+
+        await using (var get = new SqlCommand(RefreshTokenSql.SelectByHash, conn))
         {
             get.Parameters.Add(new SqlParameter("@h", SqlDbType.VarBinary, 32){ Value = hash });
             await using var rdr = await get.ExecuteReaderAsync(ct);
             if (!await rdr.ReadAsync(ct))
                 return new RefreshRotateResult(false, null, null, Array.Empty<string>(), null, null, "invalid_refresh_token");
 
-            id = rdr.GetGuid(0);
-            tenantId = rdr.GetString(1);
-            userId = rdr.GetString(2);
-            dbDevice = rdr.IsDBNull(3) ? null : rdr.GetString(3);
+            id        = rdr.GetGuid(0);
+            tenantId  = rdr.GetString(1);
+            userId    = rdr.GetString(2);
+            dbDevice  = rdr.IsDBNull(3) ? null : rdr.GetString(3);
             expiresAt = rdr.GetDateTimeOffset(4);
             revokedAt = rdr.IsDBNull(5) ? (DateTimeOffset?)null : rdr.GetDateTimeOffset(5);
-            replacedBy = rdr.IsDBNull(6) ? (Guid?)null : rdr.GetGuid(6);
+            replacedBy= rdr.IsDBNull(6) ? (Guid?)null : rdr.GetGuid(6);
         }
 
         if (expectedTenantId is not null && !string.Equals(expectedTenantId, tenantId, StringComparison.Ordinal))
@@ -116,7 +88,6 @@ FROM RefreshTokens WHERE TokenHash = @h;";
 
         if (revokedAt is not null || replacedBy is not null)
         {
-            // Token reuse or already rotated; revoke the whole family for safety
             await RevokeChainAsync(conn, id, ip, "reuse_detected", ct);
             return new RefreshRotateResult(false, null, null, Array.Empty<string>(), null, null, "reused_or_revoked");
         }
@@ -124,19 +95,12 @@ FROM RefreshTokens WHERE TokenHash = @h;";
         if (expiresAt <= DateTimeOffset.UtcNow)
             return new RefreshRotateResult(false, null, null, Array.Empty<string>(), null, null, "expired");
 
-        if (deviceId is not null && dbDevice is not null && !string.Equals(deviceId, dbDevice, StringComparison.Ordinal))
+        if (deviceId is not null && !string.Equals(deviceId, dbDevice, StringComparison.Ordinal))
             return new RefreshRotateResult(false, null, null, Array.Empty<string>(), null, null, "wrong_device");
 
-        // rotate: revoke current and issue a new one
         var issue = await IssueAsync(tenantId, userId, dbDevice ?? deviceId, ip, ct);
 
-        const string revoke = @"
-UPDATE RefreshTokens SET RevokedAt=@now, RevokedByIp=@ip, ReasonRevoked='rotated'
-WHERE Id=@id;
-UPDATE RefreshTokens SET ReplacedByTokenId = (SELECT TOP(1) Id FROM RefreshTokens WHERE TokenHash=@hNew)
-WHERE Id=@id;";
-
-        await using (var cmd = new SqlCommand(revoke, conn))
+        await using (var cmd = new SqlCommand(RefreshTokenSql.RevokeOnRotate, conn))
         {
             cmd.Parameters.Add(new SqlParameter("@now", SqlDbType.DateTimeOffset){ Value = DateTimeOffset.UtcNow });
             cmd.Parameters.Add(new SqlParameter("@ip", SqlDbType.NVarChar, 64){ Value = ip });
@@ -145,19 +109,23 @@ WHERE Id=@id;";
             await cmd.ExecuteNonQueryAsync(ct);
         }
 
-        // load roles for new access token issuance
-        var roles = await GetRolesAsync(conn, userId, ct);
+        var roles = new System.Collections.Generic.List<string>();
+        await using (var rc = new SqlCommand(IdentitySql.SelectRolesByUser, conn))
+        {
+            rc.Parameters.Add(new SqlParameter("@userId", SqlDbType.NVarChar, 64){ Value = userId });
+            await using var rr = await rc.ExecuteReaderAsync(ct);
+            while (await rr.ReadAsync(ct)) roles.Add(rr.GetString(0));
+        }
 
-        return new RefreshRotateResult(true, userId, tenantId, roles, issue.RefreshToken, issue.ExpiresAt, null);
+        return new RefreshRotateResult(true, userId, tenantId, roles.ToArray(), issue.RefreshToken, issue.ExpiresAt, null);
     }
 
     public async Task RevokeAsync(string token, string ip, string reason, CancellationToken ct = default)
     {
         var hash = TokenHasher.Sha256(token);
-        const string sql = "UPDATE RefreshTokens SET RevokedAt=@now, RevokedByIp=@ip, ReasonRevoked=@reason WHERE TokenHash=@h;";
         await using var conn = new SqlConnection(_cs);
         await conn.OpenAsync(ct);
-        await using var cmd = new SqlCommand(sql, conn);
+        await using var cmd = new SqlCommand(RefreshTokenSql.RevokeByHash, conn);
         cmd.Parameters.Add(new SqlParameter("@now", SqlDbType.DateTimeOffset){ Value = DateTimeOffset.UtcNow });
         cmd.Parameters.Add(new SqlParameter("@ip", SqlDbType.NVarChar, 64){ Value = ip });
         cmd.Parameters.Add(new SqlParameter("@reason", SqlDbType.NVarChar, 128){ Value = reason });
@@ -167,10 +135,9 @@ WHERE Id=@id;";
 
     public async Task RevokeAllForUserAsync(string tenantId, string userId, string ip, string reason, CancellationToken ct = default)
     {
-        const string sql = "UPDATE RefreshTokens SET RevokedAt=@now, RevokedByIp=@ip, ReasonRevoked=@reason WHERE TenantId=@t AND UserId=@u AND RevokedAt IS NULL;";
         await using var conn = new SqlConnection(_cs);
         await conn.OpenAsync(ct);
-        await using var cmd = new SqlCommand(sql, conn);
+        await using var cmd = new SqlCommand(RefreshTokenSql.RevokeAllForUser, conn);
         cmd.Parameters.Add(new SqlParameter("@now", SqlDbType.DateTimeOffset){ Value = DateTimeOffset.UtcNow });
         cmd.Parameters.Add(new SqlParameter("@ip", SqlDbType.NVarChar, 64){ Value = ip });
         cmd.Parameters.Add(new SqlParameter("@reason", SqlDbType.NVarChar, 128){ Value = reason });
@@ -181,24 +148,11 @@ WHERE Id=@id;";
 
     private static async Task RevokeChainAsync(SqlConnection conn, Guid id, string ip, string reason, CancellationToken ct)
     {
-        const string sql = @"
-UPDATE RefreshTokens SET RevokedAt=@now, RevokedByIp=@ip, ReasonRevoked=@reason WHERE Id=@id OR ReplacedByTokenId=@id;";
-        await using var cmd = new SqlCommand(sql, conn);
+        await using var cmd = new SqlCommand(RefreshTokenSql.RevokeChain, conn);
         cmd.Parameters.Add(new SqlParameter("@now", SqlDbType.DateTimeOffset){ Value = DateTimeOffset.UtcNow });
         cmd.Parameters.Add(new SqlParameter("@ip", SqlDbType.NVarChar, 64){ Value = ip });
         cmd.Parameters.Add(new SqlParameter("@reason", SqlDbType.NVarChar, 128){ Value = reason });
         cmd.Parameters.Add(new SqlParameter("@id", SqlDbType.UniqueIdentifier){ Value = id });
         await cmd.ExecuteNonQueryAsync(ct);
-    }
-
-    private static async Task<string[]> GetRolesAsync(SqlConnection conn, string userId, CancellationToken ct)
-    {
-        const string rolesSql = @"SELECT ur.RoleId FROM UserRoles ur WHERE ur.UserId = @userId";
-        var roles = new System.Collections.Generic.List<string>();
-        await using var cmd = new SqlCommand(rolesSql, conn);
-        cmd.Parameters.Add(new SqlParameter("@userId", SqlDbType.NVarChar, 64){ Value = userId });
-        await using var rr = await cmd.ExecuteReaderAsync(ct);
-        while (await rr.ReadAsync(ct)) roles.Add(rr.GetString(0));
-        return roles.ToArray();
     }
 }
