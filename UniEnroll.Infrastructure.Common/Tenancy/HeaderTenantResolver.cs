@@ -11,7 +11,7 @@ public sealed class HeaderTenantResolver : ITenantResolver
 
     public Task<string?> ResolveAsync(HttpContext context)
     {
-        if (context.Request.Headers.TryGetValue("X-Tenant-Id", out var v) && !string.IsNullOrWhiteSpace(v))
+        if (context.Request.Headers.TryGetValue(TenantHeaderNames.TenantId, out var v) && !string.IsNullOrWhiteSpace(v))
             return Task.FromResult<string?>(v.ToString());
         return Task.FromResult<string?>(null);
     }

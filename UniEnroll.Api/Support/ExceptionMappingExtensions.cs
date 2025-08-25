@@ -1,9 +1,10 @@
-using System.Linq;
 using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using UniEnroll.Infrastructure.Common.Tenancy;
 
 namespace UniEnroll.Api.Support;
 
@@ -40,7 +41,7 @@ public static class ExceptionMappingExtensions
                     }
                 };
 
-                problem.Extensions["correlationId"] = ctx.Items.TryGetValue("X-Correlation-Id", out var corr) ? corr : null;
+                problem.Extensions["correlationId"] = ctx.Items.TryGetValue(TenantHeaderNames.CorrelationId, out var corr) ? corr : null;
                 ctx.Response.StatusCode = problem.Status ?? StatusCodes.Status500InternalServerError;
                 await ctx.Response.WriteAsJsonAsync(problem);
             });

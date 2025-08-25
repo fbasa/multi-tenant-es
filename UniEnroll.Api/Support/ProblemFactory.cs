@@ -1,5 +1,6 @@
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using UniEnroll.Infrastructure.Common.Tenancy;
 
 namespace UniEnroll.Api.Support;
 
@@ -12,7 +13,7 @@ public static class ProblemFactory
             Status = StatusCodes.Status400BadRequest,
             Title = "Validation failed"
         };
-        details.Extensions["correlationId"] = ctx.HttpContext.Items.TryGetValue("X-Correlation-Id", out var v) ? v : null;
+        details.Extensions["correlationId"] = ctx.HttpContext.Items.TryGetValue(TenantHeaderNames.CorrelationId, out var v) ? v : null;
         return new ObjectResult(details) { StatusCode = StatusCodes.Status400BadRequest };
     }
 }

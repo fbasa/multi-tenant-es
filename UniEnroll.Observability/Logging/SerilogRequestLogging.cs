@@ -1,7 +1,7 @@
 
 using Microsoft.AspNetCore.Builder;
 
-namespace UniEnroll.Api.Observability;
+namespace UniEnroll.Observability.Logging;
 
 public static class SerilogRequestLogging
 {

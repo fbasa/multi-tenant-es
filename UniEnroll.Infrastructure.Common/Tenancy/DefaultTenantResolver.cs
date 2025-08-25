@@ -8,7 +8,7 @@ public sealed class DefaultTenantResolver : ITenantResolver
 {
     public Task<string?> ResolveAsync(HttpContext httpContext)
     {
-        if (httpContext.Request.Headers.TryGetValue("X-Tenant-Id", out var fromHeader) && !string.IsNullOrWhiteSpace(fromHeader))
+        if (httpContext.Request.Headers.TryGetValue(TenantHeaderNames.TenantId, out var fromHeader) && !string.IsNullOrWhiteSpace(fromHeader))
             return Task.FromResult<string?>(fromHeader.ToString());
 
         if (httpContext.Request.Query.TryGetValue("tenantId", out var fromQuery) && !string.IsNullOrWhiteSpace(fromQuery))

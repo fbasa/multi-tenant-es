@@ -20,13 +20,22 @@ public sealed class CompositeTenantResolver : ITenantResolver
     public async Task<string?> ResolveAsync(HttpContext context)
     {
         var cached = _cache.TryGet(context, out var t) ? t : null;
-        if (!string.IsNullOrWhiteSpace(cached)) return cached;
+        if (!string.IsNullOrWhiteSpace(cached))
+        {
+            return cached;
+        }
 
         var fromHeader = await _header.ResolveAsync(context);
-        if (!string.IsNullOrWhiteSpace(fromHeader)) { _cache.Set(context, fromHeader!); return fromHeader; }
+        if (!string.IsNullOrWhiteSpace(fromHeader)) 
+        { 
+            _cache.Set(context, fromHeader!); return fromHeader; 
+        }
 
         var fromSub = await _sub.ResolveAsync(context);
-        if (!string.IsNullOrWhiteSpace(fromSub)) { _cache.Set(context, fromSub!); return fromSub; }
+        if (!string.IsNullOrWhiteSpace(fromSub)) 
+        { 
+            _cache.Set(context, fromSub!); return fromSub; 
+        }
 
         return null;
     }

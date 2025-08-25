@@ -1,14 +1,14 @@
-using System.Diagnostics;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using UniEnroll.Infrastructure.Common.Logging;
+using UniEnroll.Infrastructure.Common.Tenancy;
 
 namespace UniEnroll.Api.Middleware;
 
 public sealed class CorrelationIdMiddleware
 {
-    public const string HeaderName = "X-Correlation-Id";
     private readonly RequestDelegate _next;
     private readonly ILogger<CorrelationIdMiddleware> _logger;
 
@@ -19,14 +19,14 @@ public sealed class CorrelationIdMiddleware
 
     public async Task Invoke(HttpContext context)
     {
-        var corr = context.Request.Headers.TryGetValue(HeaderName, out var v) && !string.IsNullOrWhiteSpace(v)
+        var corr = context.Request.Headers.TryGetValue(TenantHeaderNames.CorrelationId, out var v) && !string.IsNullOrWhiteSpace(v)
             ? v.ToString()
             : System.Guid.NewGuid().ToString("N");
 
-        context.Items[HeaderName] = corr;
+        context.Items[TenantHeaderNames.CorrelationId] = corr;
         context.Response.OnStarting(() =>
         {
-            context.Response.Headers[HeaderName] = corr;
+            context.Response.Headers[TenantHeaderNames.CorrelationId] = corr;
             return Task.CompletedTask;
         });
 

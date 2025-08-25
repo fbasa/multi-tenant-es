@@ -26,8 +26,7 @@ public sealed class InstructorsController : ControllerBase
     [Authorize(Policy = Policies.Instructor.ManageSections)]
     public async Task<IActionResult> Upsert([FromBody] UpsertInstructorRequest req, CancellationToken ct)
     {
-        var cmd = new UpsertInstructorCommand(req.InstructorId, req.FirstName, req.LastName, req.Email);
-        var r = await _mediator.Send(cmd, ct);
+        var r = await _mediator.Send(new UpsertInstructorCommand(req.InstructorId, req.FirstName, req.LastName, req.Email), ct);
         return r.Value.Outcome switch
         {
             InstructorOutcome.Inserted => CreatedAtAction(nameof(Get), new { id = req.InstructorId, version = "1.0" }, new { id = req.InstructorId }),

@@ -1,5 +1,5 @@
 
-namespace UniEnroll.Api.Tenancy;
+namespace UniEnroll.Infrastructure.Common.Tenancy;
 
 public static class TenantHeaderNames
 {
