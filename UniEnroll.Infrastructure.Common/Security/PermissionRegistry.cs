@@ -1,7 +1,4 @@
 
-using System.Collections.Generic;
-using System.Linq;
-
 namespace UniEnroll.Infrastructure.Common.Security;
 
 public static class PermissionRegistry
@@ -31,12 +28,12 @@ public static class PermissionRegistry
         public static readonly string[] ReportingView   = { "reporting:view" };
         public static readonly string[] ReportingExport = { "reporting:export" };
 
-        // Billing (NEW)
+        // Billing 
         public static readonly string[] BillingView     = { "billing:view" };
         public static readonly string[] BillingCapture  = { "billing:capture" };
         public static readonly string[] BillingRefund   = { "billing:refund" };
 
-        // Scheduling (NEW)
+        // Scheduling
         public static readonly string[] SchedulingBuild              = { "scheduling:build" };
         public static readonly string[] SchedulingAssignRoom         = { "scheduling:assign-room" };
         public static readonly string[] SchedulingOptimize           = { "scheduling:optimize" };

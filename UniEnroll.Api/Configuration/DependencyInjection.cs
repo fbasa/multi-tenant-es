@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 using UniEnroll.Api.Middleware;
 using UniEnroll.Api.Support;
@@ -19,9 +18,9 @@ public static class DependencyInjection
     {
 
         // 001 Serilog + Opentelemetry
-        services.AddObservability(config)
-                .AddInfrastructureCommon(config)
-                .AddInfrastructureEf(config)
+        services.AddObservability(config)               //UniEnroll.Observability
+                .AddInfrastructureCommon(config)        //UniEnroll.Infrastructure.Common
+                .AddInfrastructureEf(config)            //UniEnroll.Infrastructure.EF
 
         // MediatR (scan Application assembly)
         .AddMediatR(cfg =>
@@ -37,12 +36,13 @@ public static class DependencyInjection
                 o.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
             });
 
+        //UniEnroll.Api.Configuration
         services.AddApiVersioningExtensions()           // Versioning
                 .AddProblemDetailsExtensions()          // RFC7807 + correlationId
                 .AddCorsExtensions(config)              // CORS
                 .AddSwaggerExtensions()                 // Swagger
-                .AddAuthenticationExtensions(config)    // Authentication
-                .AddAuthorizationExtensions()           // Authorization
+                .AddAuthenticationExtensions(config)    // JWT token + Refresh token
+                .AddAuthorizationExtensions()           // Authorization Policies
                 .AddHealthChecksExtensins()             // HealthCheck
                 .AddRateLimitingExtensions(config)      // Rate Limiting
                 .AddDataProtectionExtensions(config)    // Data protection
@@ -57,11 +57,11 @@ public static class DependencyInjection
         .AddSingleton<EfTenantSetter>()
 
         // MediatR / Automapper / Pipeline behaviors i.e. ValidationBehavior,LoggingBehavior,TransactionBehavior,IdempotencyBehavior
-        .AddApplication()
+        .AddApplication()   //UniEnroll.Application
 
-        .AddMessaging(config)
+        .AddMessaging(config)       //UniEnroll.Messaging
 
-        .AddReporting(config);
+        .AddReporting(config);      //UniEnroll.Reporting
 
         return services;
     }

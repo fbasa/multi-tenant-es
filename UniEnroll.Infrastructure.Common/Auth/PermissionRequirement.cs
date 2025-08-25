@@ -1,7 +1,7 @@
 
 using Microsoft.AspNetCore.Authorization;
 
-namespace UniEnroll.Api.Auth;
+namespace UniEnroll.Infrastructure.Common.Auth;
 
 public sealed class PermissionRequirement : IAuthorizationRequirement
 {

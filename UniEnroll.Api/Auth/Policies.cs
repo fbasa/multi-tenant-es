@@ -14,6 +14,7 @@ public static class Policies
         public const string ViewLedger = "student.ledger.view";
         public const string Pay = "student.pay";
     }
+
     public static class Instructor
     {
         public const string ViewLoads = "instructor.loads.read";

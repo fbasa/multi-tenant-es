@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using UniEnroll.Application.Abstractions;
+using UniEnroll.Infrastructure.Common.Auth;
 
 namespace UniEnroll.Api.Auth;
 
