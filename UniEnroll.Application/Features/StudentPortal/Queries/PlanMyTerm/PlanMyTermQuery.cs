@@ -3,7 +3,7 @@ using MediatR;
 using UniEnroll.Application.Common;
 using UniEnroll.Contracts.StudentPortal;
 
-namespace UniEnroll.Application.Features.StudentPortal.Queries.PlanMyTerm;
+namespace UniEnroll.Application.Features.StudentPortal.Queries;
 
 public sealed record PlanMyTermQuery(string TenantId, string StudentId, string TermId) : IRequest<Result<IReadOnlyList<PlanMyTermSuggestionDto>>>;
 

@@ -3,7 +3,7 @@ using MediatR;
 using UniEnroll.Application.Common;
 using UniEnroll.Contracts.Registrar;
 
-namespace UniEnroll.Application.Features.Registrar.Queries.GetTermById;
+namespace UniEnroll.Application.Features.Registrar.Queries;
 
 public sealed record GetTermByIdQuery(string TenantId, string TermId) : IRequest<Result<TermDto>>;
 

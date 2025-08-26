@@ -3,7 +3,7 @@ using MediatR;
 using UniEnroll.Application.Common;
 using UniEnroll.Contracts.Registrar;
 
-namespace UniEnroll.Application.Features.Registrar.Queries.ListActiveHolds;
+namespace UniEnroll.Application.Features.Registrar.Queries;
 
 public sealed record ListActiveHoldsQuery(string TenantId, string StudentId) : IRequest<Result<IReadOnlyList<HoldDto>>>;
 

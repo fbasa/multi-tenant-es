@@ -1,9 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using UniEnroll.Application.Features.Students.Commands.RegisterStudent;
-using UniEnroll.Application.Features.Students.Commands.UpdateNotificationPrefs;
-using UniEnroll.Application.Features.Students.Commands.UpdateStudentProfile;
-using UniEnroll.Application.Features.Students.Queries.GetStudentById;
+using UniEnroll.Application.Features.Students.Commands;
+using UniEnroll.Application.Features.Students.Queries;
 using UniEnroll.Contracts.Students;
 
 namespace UniEnroll.Api.Controllers;

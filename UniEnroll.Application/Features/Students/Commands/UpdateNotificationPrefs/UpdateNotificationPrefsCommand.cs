@@ -2,7 +2,7 @@
 using MediatR;
 using UniEnroll.Application.Common;
 
-namespace UniEnroll.Application.Features.Students.Commands.UpdateNotificationPrefs;
+namespace UniEnroll.Application.Features.Students.Commands;
 
 public sealed record UpdateNotificationPrefsCommand(string TenantId, string StudentId, bool EmailEnabled, bool SmsEnabled, bool PushEnabled)
     : IRequest<Result<bool>>;

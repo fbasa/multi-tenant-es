@@ -5,7 +5,7 @@ using UniEnroll.Application.Abstractions;
 using UniEnroll.Domain.Students;
 using UniEnroll.Domain.Students.ValueObjects;
 
-namespace UniEnroll.Application.Features.Students.Commands.UpdateStudentProfile;
+namespace UniEnroll.Application.Features.Students.Commands;
 
 public sealed record UpdateStudentProfileCommand(string TenantId, string StudentId, string FirstName, string LastName, string Email, string ProgramId, int EntryYear)
     : IRequest<Result<bool>>;

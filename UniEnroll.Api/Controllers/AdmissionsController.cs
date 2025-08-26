@@ -1,8 +1,8 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using UniEnroll.Application.Features.Admissions.Commands.Apply;
-using UniEnroll.Application.Features.Admissions.Queries.GetApplicationStatus;
+using UniEnroll.Application.Features.Admissions.Commands;
+using UniEnroll.Application.Features.Admissions.Queries;
 
 namespace UniEnroll.Api.Controllers;
 

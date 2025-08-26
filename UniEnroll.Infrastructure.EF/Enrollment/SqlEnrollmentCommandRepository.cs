@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using UniEnroll.Application.Abstractions;
-using UniEnroll.Application.Features.Enrollment.Commands.Common;
+using UniEnroll.Contracts.Enrollment;
 using UniEnroll.Infrastructure.EF.Persistence;
 
 namespace UniEnroll.Infrastructure.EF.Enrollment;

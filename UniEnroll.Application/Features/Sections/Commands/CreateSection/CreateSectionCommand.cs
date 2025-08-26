@@ -6,7 +6,7 @@ using UniEnroll.Application.Abstractions;
 using UniEnroll.Domain.Sections;
 using UniEnroll.Domain.Sections.ValueObjects;
 
-namespace UniEnroll.Application.Features.Sections.Commands.CreateSection;
+namespace UniEnroll.Application.Features.Sections.Commands;
 
 public sealed record CreateSectionCommand(
     string TenantId,

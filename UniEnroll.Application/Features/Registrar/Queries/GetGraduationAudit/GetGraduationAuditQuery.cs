@@ -3,7 +3,7 @@ using MediatR;
 using UniEnroll.Application.Common;
 using UniEnroll.Contracts.Registrar;
 
-namespace UniEnroll.Application.Features.Registrar.Queries.GetGraduationAudit;
+namespace UniEnroll.Application.Features.Registrar.Queries;
 
 public sealed record GetGraduationAuditQuery(string TenantId, string StudentId) : IRequest<Result<GraduationAuditDto>>;
 

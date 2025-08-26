@@ -1,5 +1,5 @@
 
-namespace UniEnroll.Application.Features.Instructors.Commands.Common;
+namespace UniEnroll.Contracts.Instructors;
 
 public enum InstructorOutcome
 {

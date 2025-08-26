@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using UniEnroll.Application.Abstractions;
-using UniEnroll.Application.Features.Payments.Queries.Common;
+using UniEnroll.Contracts.Payments;
 using UniEnroll.Infrastructure.EF.Sql;
 
 namespace UniEnroll.Infrastructure.EF.Repositories;

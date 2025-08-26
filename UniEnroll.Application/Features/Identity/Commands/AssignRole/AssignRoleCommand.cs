@@ -4,7 +4,7 @@ using UniEnroll.Application.Common;
 using UniEnroll.Application.Abstractions;
 using UniEnroll.Domain.Identity;
 
-namespace UniEnroll.Application.Features.Identity.Commands.AssignRole;
+namespace UniEnroll.Application.Features.Identity.Commands;
 
 public sealed record AssignRoleCommand(string TenantId, string UserId, string Role) : IRequest<Result<bool>>;
 

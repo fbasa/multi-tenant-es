@@ -3,7 +3,7 @@ using MediatR;
 using UniEnroll.Application.Common;
 using UniEnroll.Application.Abstractions;
 
-namespace UniEnroll.Application.Features.Enrollment.Commands.DropEnrollment;
+namespace UniEnroll.Application.Features.Enrollment.Commands;
 
 public sealed record DropEnrollmentCommand() : IRequest<Result<bool>>
 {

@@ -2,7 +2,7 @@
 using MediatR;
 using UniEnroll.Application.Common;
 
-namespace UniEnroll.Application.Features.Grades.Commands.RecordGrade;
+namespace UniEnroll.Application.Features.Grades.Commands;
 
 public sealed record RecordGradeCommand(string TenantId, string EnrollmentId, string Grade) : IRequest<Result<bool>>;
 

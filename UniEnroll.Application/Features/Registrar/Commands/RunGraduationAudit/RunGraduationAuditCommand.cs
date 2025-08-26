@@ -2,7 +2,7 @@
 using MediatR;
 using UniEnroll.Application.Common;
 
-namespace UniEnroll.Application.Features.Registrar.Commands.RunGraduationAudit;
+namespace UniEnroll.Application.Features.Registrar.Commands;
 
 public sealed record RunGraduationAuditCommand(string TenantId, string StudentId) : IRequest<Result<bool>>;
 

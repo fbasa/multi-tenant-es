@@ -6,9 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniEnroll.Api.Auth;
-using UniEnroll.Application.Features.Instructors.Commands.Common;
-using UniEnroll.Application.Features.Instructors.Commands.AssignInstructorToSection;
-using UniEnroll.Application.Features.Instructors.Commands.UpsertInstructor;
+using UniEnroll.Application.Features.Instructors.Commands;
 using UniEnroll.Contracts.Instructors;
 using Asp.Versioning;
 

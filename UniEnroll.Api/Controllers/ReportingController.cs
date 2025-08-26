@@ -3,10 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniEnroll.Api.Auth;
-using UniEnroll.Application.Features.Reporting.Queries.EnrollmentReport;
-using UniEnroll.Application.Features.Reporting.Queries.InstructorLoadReport;
-using UniEnroll.Application.Features.Reporting.Queries.RetentionCohortReport;
-using UniEnroll.Application.Features.Reporting.Queries.RevenueReport;
+using UniEnroll.Application.Features.Reporting.Queries;
 using UniEnroll.Contracts.Reporting;
 
 namespace UniEnroll.Api.Controllers;

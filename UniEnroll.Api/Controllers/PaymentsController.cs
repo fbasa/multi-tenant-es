@@ -6,10 +6,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniEnroll.Api.Auth;
-using UniEnroll.Application.Features.Payments.Commands.Common;
-using UniEnroll.Application.Features.Payments.Commands.CapturePayment;
-using UniEnroll.Application.Features.Payments.Commands.RefundPayment;
-using UniEnroll.Application.Features.Payments.Queries.GetPaymentStatus;
+using UniEnroll.Application.Features.Payments.Commands;
+using UniEnroll.Application.Features.Payments.Queries;
 using UniEnroll.Contracts.Payments;
 using Asp.Versioning;
 

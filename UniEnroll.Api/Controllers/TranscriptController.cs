@@ -2,8 +2,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniEnroll.Api.Auth;
-using UniEnroll.Application.Features.Transcript.Commands.RequestTranscript;
-using UniEnroll.Application.Features.Transcript.Queries.GetTranscriptRequest;
+using UniEnroll.Application.Features.Transcript.Commands;
+using UniEnroll.Application.Features.Transcript.Queries;
 using UniEnroll.Contracts.Transcript;
 
 namespace UniEnroll.Api.Controllers;

@@ -2,7 +2,7 @@
 using MediatR;
 using UniEnroll.Application.Common;
 
-namespace UniEnroll.Application.Features.Registrar.Commands.PlaceHold;
+namespace UniEnroll.Application.Features.Registrar.Commands;
 
 public sealed record PlaceHoldCommand(string TenantId, string StudentId, string HoldType, string Status) : IRequest<Result<string>>;
 

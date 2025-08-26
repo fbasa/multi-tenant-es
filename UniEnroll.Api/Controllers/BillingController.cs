@@ -2,8 +2,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniEnroll.Api.Auth;
-using UniEnroll.Application.Features.Billing.Commands.GenerateInvoice;
-using UniEnroll.Application.Features.Billing.Queries.GetLedger;
+using UniEnroll.Application.Features.Billing.Commands;
+using UniEnroll.Application.Features.Billing.Queries;
 using UniEnroll.Contracts.Billing;
 
 namespace UniEnroll.Api.Controllers;

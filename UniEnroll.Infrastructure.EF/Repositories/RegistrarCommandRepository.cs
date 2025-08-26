@@ -6,7 +6,6 @@ using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 using UniEnroll.Application.Abstractions;
-using UniEnroll.Application.Features.Registrar.Commands.Common;
 using UniEnroll.Contracts.Registrar;
 using UniEnroll.Infrastructure.EF.Sql;
 

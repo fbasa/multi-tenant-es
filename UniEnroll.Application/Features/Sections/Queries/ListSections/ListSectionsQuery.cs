@@ -5,7 +5,7 @@ using UniEnroll.Application.Abstractions;
 using UniEnroll.Contracts.Sections;
 using UniEnroll.Domain.Sections;
 
-namespace UniEnroll.Application.Features.Sections.Queries.ListSections;
+namespace UniEnroll.Application.Features.Sections.Queries;
 
 public sealed record ListSectionsQuery(string TenantId, string? CourseId, string? InstructorId, string? TermId, int Page, int Size) : IRequest<Result<PagedResult<SectionDto>>>;
 

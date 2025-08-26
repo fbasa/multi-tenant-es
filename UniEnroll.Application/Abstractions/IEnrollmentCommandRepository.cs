@@ -2,7 +2,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using UniEnroll.Application.Features.Enrollment.Commands.Common;
+using UniEnroll.Contracts.Enrollment;
 
 namespace UniEnroll.Application.Abstractions;
 

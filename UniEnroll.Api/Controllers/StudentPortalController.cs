@@ -2,9 +2,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniEnroll.Api.Auth;
-using UniEnroll.Application.Features.StudentPortal.Commands.AcceptOffer;
-using UniEnroll.Application.Features.StudentPortal.Queries.GetStudentDashboard;
-using UniEnroll.Application.Features.StudentPortal.Queries.PlanMyTerm;
+using UniEnroll.Application.Features.StudentPortal.Commands;
+using UniEnroll.Application.Features.StudentPortal.Queries;
 using UniEnroll.Contracts.StudentPortal;
 
 namespace UniEnroll.Api.Controllers;

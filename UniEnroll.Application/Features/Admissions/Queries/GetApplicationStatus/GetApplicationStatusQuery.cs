@@ -3,7 +3,7 @@ using MediatR;
 using UniEnroll.Application.Common;
 using UniEnroll.Application.Abstractions;
 
-namespace UniEnroll.Application.Features.Admissions.Queries.GetApplicationStatus;
+namespace UniEnroll.Application.Features.Admissions.Queries;
 
 public sealed record GetApplicationStatusQuery(string TenantId, string ApplicationId) : IRequest<Result<string>>;
 

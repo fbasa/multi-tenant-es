@@ -1,12 +1,24 @@
 
+using FluentValidation;
 using MediatR;
-using UniEnroll.Application.Common;
 using UniEnroll.Application.Abstractions;
+using UniEnroll.Application.Common;
 
-namespace UniEnroll.Application.Features.Admissions.Commands.Apply;
+namespace UniEnroll.Application.Features.Admissions.Commands;
 
 public sealed record ApplyCommand(string TenantId, string ApplicantUserId, string ProgramId, string TermCode)
     : IRequest<Result<string>>;
+
+public sealed class ApplyCommandValidator : AbstractValidator<ApplyCommand>
+{
+    public ApplyCommandValidator()
+    {
+        RuleFor(x => x.TenantId).NotEmpty();
+        RuleFor(x => x.ApplicantUserId).NotEmpty();
+        RuleFor(x => x.ProgramId).NotEmpty();
+        RuleFor(x => x.TermCode).NotEmpty().MaximumLength(16);
+    }
+}
 
 public sealed class ApplyCommandHandler(IRepository<Domain.Admissions.Application> repo, IIdGenerator ids, IUnitOfWork uow) : IRequestHandler<ApplyCommand, Result<string>>
 {

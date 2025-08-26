@@ -3,8 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using UniEnroll.Application.Features.Scheduling.Commands.Common;
-using UniEnroll.Application.Features.Scheduling.Queries.Common;
+using UniEnroll.Contracts.Scheduling;
 
 namespace UniEnroll.Application.Abstractions;
 

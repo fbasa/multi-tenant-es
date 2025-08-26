@@ -2,8 +2,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniEnroll.Api.Auth;
-using UniEnroll.Application.Features.Grades.Commands.RecordGrade;
-using UniEnroll.Application.Features.Grades.Queries.GetTranscript;
+using UniEnroll.Application.Features.Grades.Commands;
+using UniEnroll.Application.Features.Grades.Queries;
 using UniEnroll.Contracts.Grades;
 
 namespace UniEnroll.Api.Controllers;
