@@ -3,7 +3,13 @@ using Microsoft.AspNetCore.Http;
 
 namespace UniEnroll.Infrastructure.Common.Tenancy;
 
-public sealed class TenantCache
+public interface ITenantCache
+{
+    void Set(HttpContext ctx, string tenantId);
+    bool TryGet(HttpContext ctx, out string? tenantId);
+}
+
+public sealed class TenantCache : ITenantCache
 {
     private const string Key = "__tenantId";
     public bool TryGet(HttpContext ctx, out string? tenantId)

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace UniEnroll.Infrastructure.Common.Tenancy;
 
-public sealed class SubdomainTenantResolver
+public sealed class SubdomainTenantResolver : ITenantResolver
 {
     public Task<string?> ResolveAsync(HttpContext context)
     {

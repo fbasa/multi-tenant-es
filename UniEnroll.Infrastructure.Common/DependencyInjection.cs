@@ -37,8 +37,20 @@ public static class DependencyInjection
         services.AddSingleton<IEmailSender, NoOpEmailSender>();
         services.AddSingleton<IFileStorage, LocalFileStorage>();
 
-        // Tenant resolver
-        services.AddSingleton<ITenantResolver, DefaultTenantResolver>();
+        services.AddSingleton<ITenantCache, TenantCache>();
+
+        services.AddSingleton<RouteTenantResolver>();      // highest priority
+        services.AddSingleton<HeaderTenantResolver>();
+        services.AddSingleton<SubdomainTenantResolver>();
+        services.AddSingleton<ITenantResolver>(sp =>
+            new CompositeTenantResolver(new ITenantResolver[] {
+                sp.GetRequiredService<RouteTenantResolver>(),     // highest priority
+                sp.GetRequiredService<HeaderTenantResolver>(),
+                sp.GetRequiredService<SubdomainTenantResolver>()
+            },
+            sp.GetRequiredService<ITenantCache>()
+        ));
+
 
         return services;
     }
