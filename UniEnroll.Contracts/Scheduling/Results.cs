@@ -1,5 +1,5 @@
 
-namespace UniEnroll.Application.Features.Scheduling.Commands.Common;
+namespace UniEnroll.Contracts.Scheduling;
 
 public enum SchedulingOutcome
 {

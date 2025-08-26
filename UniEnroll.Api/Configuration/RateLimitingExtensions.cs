@@ -1,8 +1,5 @@
 
 using Microsoft.AspNetCore.RateLimiting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using System.Threading.RateLimiting;
 
 namespace UniEnroll.Api.Configuration;
 

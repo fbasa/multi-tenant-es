@@ -3,9 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using UniEnroll.Application.Abstractions;
-using UniEnroll.Application.Features.Identity.Commands.AssignRole;
-using UniEnroll.Application.Features.Identity.Commands.RegisterUser;
-using UniEnroll.Application.Features.Identity.Queries.GetMe;
+using UniEnroll.Application.Features.Identity.Commands;
+using UniEnroll.Application.Features.Identity.Queries;
 using UniEnroll.Contracts.Identity;
 using UniEnroll.Infrastructure.Common.Options;
 

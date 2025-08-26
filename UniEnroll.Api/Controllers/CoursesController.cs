@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using UniEnroll.Application.Features.Courses.Commands.CreateCourse;
-using UniEnroll.Application.Features.Courses.Queries.ListCourses;
+using UniEnroll.Application.Features.Courses.Commands;
+using UniEnroll.Application.Features.Courses.Queries;
 using UniEnroll.Contracts.Courses;
 
 namespace UniEnroll.Api.Controllers;

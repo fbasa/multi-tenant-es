@@ -1,11 +1,23 @@
 
+using FluentValidation;
 using MediatR;
-using UniEnroll.Application.Common;
 using UniEnroll.Application.Abstractions;
+using UniEnroll.Application.Common;
 
-namespace UniEnroll.Application.Features.Enrollment.Commands.EnrollStudent;
+namespace UniEnroll.Application.Features.Enrollment.Commands;
 
 public sealed record EnrollStudentCommand(string TenantId, Guid SectionId, string StudentId, string? Reason) : IRequest<Result<string>>;
+
+public sealed class EnrollStudentCommandValidator : AbstractValidator<EnrollStudentCommand>
+{
+    public EnrollStudentCommandValidator()
+    {
+        RuleFor(x => x.TenantId).NotEmpty();
+        RuleFor(x => x.SectionId).NotEmpty();
+        RuleFor(x => x.StudentId).NotEmpty();
+    }
+}
+
 
 public sealed class EnrollStudentHandler : IRequestHandler<EnrollStudentCommand, Result<string>>
 {

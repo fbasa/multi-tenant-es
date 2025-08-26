@@ -5,7 +5,7 @@ using UniEnroll.Application.Abstractions;
 using UniEnroll.Contracts.Courses;
 using UniEnroll.Domain.Courses;
 
-namespace UniEnroll.Application.Features.Courses.Queries.ListCourses;
+namespace UniEnroll.Application.Features.Courses.Queries;
 
 public sealed record ListCoursesQuery(string TenantId, int Page, int Size) : IRequest<Result<PagedResult<CourseDto>>>;
 

@@ -2,7 +2,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using UniEnroll.Application.Features.Payments.Queries.Common;
+using UniEnroll.Contracts.Payments;
 
 namespace UniEnroll.Application.Abstractions;
 

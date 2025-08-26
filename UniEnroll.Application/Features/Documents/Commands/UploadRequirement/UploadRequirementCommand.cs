@@ -4,7 +4,7 @@ using MediatR;
 using UniEnroll.Application.Common;
 using UniEnroll.Application.Abstractions;
 
-namespace UniEnroll.Application.Features.Documents.Commands.UploadRequirement;
+namespace UniEnroll.Application.Features.Documents.Commands;
 
 public sealed record UploadRequirementCommand(string TenantId, string StudentId, string FileName, byte[] Content) : IRequest<Result<string>>;
 

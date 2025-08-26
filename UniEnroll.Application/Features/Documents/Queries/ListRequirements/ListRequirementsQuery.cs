@@ -3,7 +3,7 @@ using MediatR;
 using UniEnroll.Application.Common;
 using UniEnroll.Contracts.Documents;
 
-namespace UniEnroll.Application.Features.Documents.Queries.ListRequirements;
+namespace UniEnroll.Application.Features.Documents.Queries;
 
 public sealed record ListRequirementsQuery(string TenantId, string StudentId) : IRequest<Result<IReadOnlyList<RequirementDto>>>;
 

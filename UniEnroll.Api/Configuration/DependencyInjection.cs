@@ -16,6 +16,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApiCore(this IServiceCollection services, IConfiguration config)
     {
+        services.AddMemoryCache(); // for in-proc caching
 
         // 001 Serilog + Opentelemetry
         services.AddObservability(config)               //UniEnroll.Observability

@@ -1,7 +1,4 @@
-
-using System;
-
-namespace UniEnroll.Application.Features.Enrollment.Commands.Common;
+﻿namespace UniEnroll.Contracts.Enrollment;
 
 public enum EnrollmentOutcome
 {

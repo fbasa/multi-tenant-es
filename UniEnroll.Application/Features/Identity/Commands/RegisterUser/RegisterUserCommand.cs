@@ -1,12 +1,23 @@
 
+using FluentValidation;
 using MediatR;
-using UniEnroll.Application.Common;
 using UniEnroll.Application.Abstractions;
+using UniEnroll.Application.Common;
 using UniEnroll.Domain.Identity;
 
-namespace UniEnroll.Application.Features.Identity.Commands.RegisterUser;
+namespace UniEnroll.Application.Features.Identity.Commands;
 
 public sealed record RegisterUserCommand(string TenantId, string Email, string[] Roles) : IRequest<Result<string>>;
+
+public sealed class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
+{
+    public RegisterUserCommandValidator()
+    {
+        RuleFor(x => x.TenantId).NotEmpty();
+        RuleFor(x => x.Email).NotEmpty().EmailAddress();
+        RuleFor(x => x.Roles).NotNull();
+    }
+}
 
 public sealed class RegisterUserHandler : IRequestHandler<RegisterUserCommand, Result<string>>
 {

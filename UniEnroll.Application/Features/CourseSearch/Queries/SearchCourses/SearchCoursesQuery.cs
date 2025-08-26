@@ -4,7 +4,7 @@ using UniEnroll.Application.Common;
 using UniEnroll.Application.Common.Pagination;
 using UniEnroll.Contracts.CourseSearch;
 
-namespace UniEnroll.Application.Features.CourseSearch.Queries.SearchCourses;
+namespace UniEnroll.Application.Features.CourseSearch.Queries;
 
 public sealed record SearchCoursesQuery(CourseSearchRequest Request) : IRequest<Result<KeysetPageResult<CourseSearchResultDto>>>;
 

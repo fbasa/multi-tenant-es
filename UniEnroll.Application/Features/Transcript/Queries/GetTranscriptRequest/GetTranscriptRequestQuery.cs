@@ -3,7 +3,7 @@ using MediatR;
 using UniEnroll.Application.Common;
 using UniEnroll.Contracts.Transcript;
 
-namespace UniEnroll.Application.Features.Transcript.Queries.GetTranscriptRequest;
+namespace UniEnroll.Application.Features.Transcript.Queries;
 
 public sealed record GetTranscriptRequestQuery(string TenantId, string RequestId) : IRequest<Result<TranscriptRequestDto>>;
 

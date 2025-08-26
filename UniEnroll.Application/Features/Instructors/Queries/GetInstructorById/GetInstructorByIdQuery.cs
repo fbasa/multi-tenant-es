@@ -3,7 +3,7 @@ using MediatR;
 using UniEnroll.Application.Common;
 using UniEnroll.Contracts.Instructors;
 
-namespace UniEnroll.Application.Features.Instructors.Queries.GetInstructorById;
+namespace UniEnroll.Application.Features.Instructors.Queries;
 
 public sealed record GetInstructorByIdQuery(string TenantId, string InstructorId) : IRequest<Result<InstructorDto>>;
 

@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniEnroll.Api.Auth;
 using UniEnroll.Application.Common;
-using UniEnroll.Application.Features.Sections.Commands.CreateSection;
-using UniEnroll.Application.Features.Sections.Queries.ListSections;
+using UniEnroll.Application.Features.Sections.Commands;
+using UniEnroll.Application.Features.Sections.Queries;
 using UniEnroll.Contracts.Sections;
 
 namespace UniEnroll.Api.Controllers;

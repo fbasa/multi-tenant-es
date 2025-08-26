@@ -6,13 +6,10 @@ namespace UniEnroll.Infrastructure.Common.Tenancy;
 
 public sealed class HeaderTenantResolver : ITenantResolver
 {
-    private readonly IHttpContextAccessor _http;
-    public HeaderTenantResolver(IHttpContextAccessor http) => _http = http;
-
     public Task<string?> ResolveAsync(HttpContext context)
     {
-        if (context.Request.Headers.TryGetValue(TenantHeaderNames.TenantId, out var v) && !string.IsNullOrWhiteSpace(v))
-            return Task.FromResult<string?>(v.ToString());
+        if (context.Request.Headers.TryGetValue(TenantHeaderNames.TenantId, out var fromHeader) && !string.IsNullOrWhiteSpace(fromHeader))
+            return Task.FromResult<string?>(fromHeader.ToString());
         return Task.FromResult<string?>(null);
     }
 }

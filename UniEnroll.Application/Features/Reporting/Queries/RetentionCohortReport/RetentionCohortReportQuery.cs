@@ -3,7 +3,7 @@ using MediatR;
 using UniEnroll.Application.Common;
 using UniEnroll.Contracts.Reporting;
 
-namespace UniEnroll.Application.Features.Reporting.Queries.RetentionCohortReport;
+namespace UniEnroll.Application.Features.Reporting.Queries;
 
 public sealed record RetentionCohortReportQuery(string TenantId, string CohortYear) : IRequest<Result<IReadOnlyList<RetentionCohortRowDto>>>;
 

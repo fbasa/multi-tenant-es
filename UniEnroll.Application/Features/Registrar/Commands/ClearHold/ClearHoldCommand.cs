@@ -2,7 +2,7 @@
 using MediatR;
 using UniEnroll.Application.Common;
 
-namespace UniEnroll.Application.Features.Registrar.Commands.ClearHold;
+namespace UniEnroll.Application.Features.Registrar.Commands;
 
 public sealed record ClearHoldCommand(string TenantId, string HoldId) : IRequest<Result<bool>>;
 

@@ -3,7 +3,7 @@ using MediatR;
 using UniEnroll.Application.Common;
 using UniEnroll.Application.Abstractions;
 
-namespace UniEnroll.Application.Features.Identity.Queries.GetMe;
+namespace UniEnroll.Application.Features.Identity.Queries;
 
 public sealed record GetMeQuery() : IRequest<Result<string>>;
 

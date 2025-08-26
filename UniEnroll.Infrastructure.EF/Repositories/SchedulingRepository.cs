@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using UniEnroll.Application.Abstractions;
-using UniEnroll.Application.Features.Scheduling.Commands.Common;
-using UniEnroll.Application.Features.Scheduling.Queries.Common;
+using UniEnroll.Contracts.Scheduling;
 using UniEnroll.Infrastructure.EF.Sql;
 
 namespace UniEnroll.Infrastructure.EF.Repositories;

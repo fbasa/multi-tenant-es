@@ -2,7 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniEnroll.Api.Auth;
-using UniEnroll.Application.Features.CourseSearch.Queries.SearchCourses;
+using UniEnroll.Application.Features.CourseSearch.Queries;
 using UniEnroll.Contracts.CourseSearch;
 
 namespace UniEnroll.Api.Controllers;

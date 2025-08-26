@@ -2,7 +2,7 @@
 using MediatR;
 using UniEnroll.Application.Common;
 
-namespace UniEnroll.Application.Features.Transcript.Commands.RequestTranscript;
+namespace UniEnroll.Application.Features.Transcript.Commands;
 
 public sealed record RequestTranscriptCommand(string TenantId, string StudentId) : IRequest<Result<string>>;
 

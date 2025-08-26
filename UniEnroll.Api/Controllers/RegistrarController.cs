@@ -7,9 +7,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniEnroll.Api.Auth;
-using UniEnroll.Application.Features.Registrar.Commands.Common;
-using UniEnroll.Application.Features.Registrar.Commands.SetEnrollmentWindow;
-using UniEnroll.Application.Features.Registrar.Commands.UpsertTerm;
+using UniEnroll.Application.Features.Registrar.Commands;
 using UniEnroll.Contracts.Registrar;
 
 namespace UniEnroll.Api.Controllers;

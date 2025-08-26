@@ -1,5 +1,4 @@
-
-namespace UniEnroll.Application.Features.Payments.Commands.Common;
+namespace UniEnroll.Contracts.Payments;
 
 public enum PaymentOutcome
 {
@@ -14,3 +13,5 @@ public enum PaymentOutcome
 
 public sealed record CapturePaymentResult(PaymentOutcome Outcome, string? PaymentId);
 public sealed record RefundPaymentResult(PaymentOutcome Outcome, string? RefundPaymentId);
+public sealed record PaymentStatusResult(string PaymentId, string Status, decimal Amount, string Currency);
+

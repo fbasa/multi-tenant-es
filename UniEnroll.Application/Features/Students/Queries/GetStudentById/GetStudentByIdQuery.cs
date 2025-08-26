@@ -5,7 +5,7 @@ using UniEnroll.Application.Abstractions;
 using UniEnroll.Contracts.Students;
 using UniEnroll.Domain.Students;
 
-namespace UniEnroll.Application.Features.Students.Queries.GetStudentById;
+namespace UniEnroll.Application.Features.Students.Queries;
 
 public sealed record GetStudentByIdQuery(string TenantId, string StudentId) : IRequest<Result<StudentDto>>;
 

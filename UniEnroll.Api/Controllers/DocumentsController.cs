@@ -2,8 +2,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniEnroll.Api.Auth;
-using UniEnroll.Application.Features.Documents.Commands.UploadRequirement;
-using UniEnroll.Application.Features.Documents.Queries.ListRequirements;
+using UniEnroll.Application.Features.Documents.Commands;
+using UniEnroll.Application.Features.Documents.Queries;
 using UniEnroll.Contracts.Documents;
 
 namespace UniEnroll.Api.Controllers;

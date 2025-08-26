@@ -2,7 +2,7 @@
 using MediatR;
 using UniEnroll.Application.Common;
 
-namespace UniEnroll.Application.Features.Registrar.Commands.PublishCourseCatalog;
+namespace UniEnroll.Application.Features.Registrar.Commands;
 
 public sealed record PublishCourseCatalogCommand(string TenantId) : IRequest<Result<bool>>;
 

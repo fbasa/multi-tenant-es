@@ -1,10 +1,21 @@
 
+using FluentValidation;
 using MediatR;
 using UniEnroll.Application.Common;
 
-namespace UniEnroll.Application.Features.Enrollment.Commands.ReserveSeat;
+namespace UniEnroll.Application.Features.Enrollment.Commands;
 
 public sealed record ReserveSeatCommand(string TenantId, string SectionId, string StudentId) : IRequest<Result<string>>;
+
+public sealed class ReserveSeatCommandValidator : AbstractValidator<ReserveSeatCommand>
+{
+    public ReserveSeatCommandValidator()
+    {
+        RuleFor(x => x.TenantId).NotEmpty();
+        RuleFor(x => x.SectionId).NotEmpty();
+        RuleFor(x => x.StudentId).NotEmpty();
+    }
+}
 
 public sealed class ReserveSeatHandler : IRequestHandler<ReserveSeatCommand, Result<string>>
 {

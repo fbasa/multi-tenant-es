@@ -2,7 +2,7 @@
 using MediatR;
 using UniEnroll.Application.Common;
 
-namespace UniEnroll.Application.Features.StudentPortal.Commands.AcceptOffer;
+namespace UniEnroll.Application.Features.StudentPortal.Commands;
 
 public sealed record AcceptOfferCommand(string TenantId, string StudentId) : IRequest<Result<bool>>;
 

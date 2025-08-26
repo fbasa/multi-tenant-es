@@ -5,11 +5,6 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniEnroll.Api.Auth;
-using UniEnroll.Application.Features.Enrollment.Commands.Common;
-using UniEnroll.Application.Features.Enrollment.Commands.EnrollStudent;
-using UniEnroll.Application.Features.Enrollment.Commands.DropEnrollment;
-using UniEnroll.Application.Features.Enrollment.Commands.ReserveSeat;
-using UniEnroll.Contracts.Enrollment;
 using Asp.Versioning;
 
 namespace UniEnroll.Api.Controllers;

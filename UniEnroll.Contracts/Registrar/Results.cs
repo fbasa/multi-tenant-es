@@ -1,5 +1,5 @@
 
-namespace UniEnroll.Application.Features.Registrar.Commands.Common;
+namespace UniEnroll.Contracts.Registrar;
 
 public enum RegistrarOutcome
 {

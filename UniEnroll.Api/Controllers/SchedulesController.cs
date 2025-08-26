@@ -7,12 +7,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniEnroll.Api.Auth;
-using UniEnroll.Application.Features.Scheduling.Commands.AssignRoom;
-using UniEnroll.Application.Features.Scheduling.Commands.BuildTimetable;
-using UniEnroll.Application.Features.Scheduling.Commands.Common;
-using UniEnroll.Application.Features.Scheduling.Commands.OptimizeSchedule;
-using UniEnroll.Application.Features.Scheduling.Queries.GetStudentSchedule;
-using UniEnroll.Application.Features.Scheduling.Queries.ListRoomConflicts;
+using UniEnroll.Application.Features.Scheduling.Commands;
+using UniEnroll.Application.Features.Scheduling.Queries;
 using UniEnroll.Contracts.Scheduling;
 
 namespace UniEnroll.Api.Controllers;

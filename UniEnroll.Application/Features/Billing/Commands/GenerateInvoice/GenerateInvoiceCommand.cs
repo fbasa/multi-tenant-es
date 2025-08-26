@@ -1,10 +1,8 @@
 
 using MediatR;
 using UniEnroll.Application.Common;
-using UniEnroll.Contracts.Common;
-using UniEnroll.Contracts.Billing;
 
-namespace UniEnroll.Application.Features.Billing.Commands.GenerateInvoice;
+namespace UniEnroll.Application.Features.Billing.Commands;
 
 public sealed record GenerateInvoiceCommand(string TenantId, string StudentId, decimal Amount, string Currency, string TermId) : IRequest<Result<string>>;
 
