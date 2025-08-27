@@ -1,8 +1,9 @@
 
 using FluentValidation;
 using MediatR;
-using UniEnroll.Application.Abstractions;
 using UniEnroll.Application.Common;
+using UniEnroll.Infrastructure.Common.Abstractions;
+using UniEnroll.Infrastructure.EF.Repositories.Contracts;
 
 namespace UniEnroll.Application.Features.Admissions.Commands;
 

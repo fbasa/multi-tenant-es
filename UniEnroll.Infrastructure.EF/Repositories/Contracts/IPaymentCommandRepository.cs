@@ -1,6 +1,6 @@
 using UniEnroll.Contracts.Payments;
 
-namespace UniEnroll.Application.Abstractions;
+namespace UniEnroll.Infrastructure.EF.Repositories.Contracts;
 
 public interface IPaymentCommandRepository
 {

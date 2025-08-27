@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace UniEnroll.Application.Abstractions;
+namespace UniEnroll.Infrastructure.EF.Repositories.Contracts;
 
 public interface IUnitOfWork
 {

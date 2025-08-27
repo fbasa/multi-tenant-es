@@ -2,9 +2,10 @@
 using System;
 using MediatR;
 using UniEnroll.Application.Common;
-using UniEnroll.Application.Abstractions;
 using UniEnroll.Domain.Sections;
 using UniEnroll.Domain.Sections.ValueObjects;
+using UniEnroll.Infrastructure.EF.Repositories.Contracts;
+using UniEnroll.Infrastructure.Common.Abstractions;
 
 namespace UniEnroll.Application.Features.Sections.Commands;
 

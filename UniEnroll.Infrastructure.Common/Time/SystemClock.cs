@@ -1,5 +1,5 @@
 using System;
-using UniEnroll.Application.Abstractions;
+using UniEnroll.Infrastructure.Common.Abstractions;
 
 namespace UniEnroll.Infrastructure.Common.Time;
 

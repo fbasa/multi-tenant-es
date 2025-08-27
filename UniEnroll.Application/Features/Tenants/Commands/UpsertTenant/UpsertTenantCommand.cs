@@ -1,9 +1,10 @@
 
 using FluentValidation;
 using MediatR;
-using UniEnroll.Application.Abstractions;
 using UniEnroll.Application.Common;
 using UniEnroll.Domain.Tenancy;
+using UniEnroll.Infrastructure.Common.Abstractions;
+using UniEnroll.Infrastructure.EF.Repositories.Contracts;
 
 namespace UniEnroll.Application.Features.Tenants.Commands;
 

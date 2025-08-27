@@ -1,7 +1,7 @@
 
 using MediatR;
 using UniEnroll.Application.Common;
-using UniEnroll.Application.Abstractions;
+using UniEnroll.Infrastructure.Common.Abstractions;
 
 namespace UniEnroll.Application.Features.Identity.Queries;
 

@@ -1,7 +1,7 @@
 
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
-using UniEnroll.Application.Abstractions;
+using UniEnroll.Infrastructure.Common.Abstractions;
 
 namespace UniEnroll.Infrastructure.Common.Auth;
 

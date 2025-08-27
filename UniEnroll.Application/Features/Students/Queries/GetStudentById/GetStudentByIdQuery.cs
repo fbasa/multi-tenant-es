@@ -1,9 +1,9 @@
 
 using MediatR;
 using UniEnroll.Application.Common;
-using UniEnroll.Application.Abstractions;
 using UniEnroll.Contracts.Students;
 using UniEnroll.Domain.Students;
+using UniEnroll.Infrastructure.EF.Repositories.Contracts;
 
 namespace UniEnroll.Application.Features.Students.Queries;
 

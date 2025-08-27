@@ -2,10 +2,10 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using UniEnroll.Application.Abstractions;
 using UniEnroll.Application.Features.Identity.Commands;
 using UniEnroll.Application.Features.Identity.Queries;
 using UniEnroll.Contracts.Identity;
+using UniEnroll.Infrastructure.Common.Abstractions;
 using UniEnroll.Infrastructure.Common.Options;
 
 namespace UniEnroll.Api.Controllers;

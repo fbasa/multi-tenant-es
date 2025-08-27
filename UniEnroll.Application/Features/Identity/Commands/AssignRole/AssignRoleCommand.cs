@@ -1,8 +1,8 @@
 
 using MediatR;
 using UniEnroll.Application.Common;
-using UniEnroll.Application.Abstractions;
 using UniEnroll.Domain.Identity;
+using UniEnroll.Infrastructure.EF.Repositories.Contracts;
 
 namespace UniEnroll.Application.Features.Identity.Commands;
 

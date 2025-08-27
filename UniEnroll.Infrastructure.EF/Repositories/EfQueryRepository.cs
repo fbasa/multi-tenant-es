@@ -5,8 +5,8 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using UniEnroll.Application.Abstractions;
 using UniEnroll.Infrastructure.EF.Persistence;
+using UniEnroll.Infrastructure.EF.Repositories.Contracts;
 
 namespace UniEnroll.Infrastructure.EF.Repositories;
 

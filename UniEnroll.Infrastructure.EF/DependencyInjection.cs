@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using UniEnroll.Application.Abstractions;
+using UniEnroll.Infrastructure.Common.Auth;
 using UniEnroll.Infrastructure.EF.Enrollment;
 using UniEnroll.Infrastructure.EF.Persistence;
 using UniEnroll.Infrastructure.EF.Repositories;
+using UniEnroll.Infrastructure.EF.Repositories.Contracts;
 using UniEnroll.Infrastructure.EF.Security;
 
 namespace UniEnroll.Infrastructure.EF;

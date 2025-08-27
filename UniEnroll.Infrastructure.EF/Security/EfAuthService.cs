@@ -2,7 +2,7 @@
 using System.Data;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using UniEnroll.Application.Abstractions;
+using UniEnroll.Infrastructure.Common.Abstractions;
 using UniEnroll.Infrastructure.Common.Security;
 using UniEnroll.Infrastructure.EF.Sql;
 

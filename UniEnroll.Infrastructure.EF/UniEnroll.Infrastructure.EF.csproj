@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UniEnroll.Application\UniEnroll.Application.csproj" />
+    <ProjectReference Include="..\UniEnroll.Contracts\UniEnroll.Contracts.csproj" />
     <ProjectReference Include="..\UniEnroll.Domain\UniEnroll.Domain.csproj" />
     <ProjectReference Include="..\UniEnroll.Infrastructure.Common\UniEnroll.Infrastructure.Common.csproj" />
   </ItemGroup>

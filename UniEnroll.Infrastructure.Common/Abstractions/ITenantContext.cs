@@ -1,5 +1,4 @@
-
-namespace UniEnroll.Application.Abstractions;
+namespace UniEnroll.Infrastructure.Common.Abstractions;
 
 public interface ITenantContext
 {

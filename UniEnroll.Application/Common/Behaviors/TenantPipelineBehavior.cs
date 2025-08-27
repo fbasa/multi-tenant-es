@@ -1,7 +1,7 @@
 
 using System.Reflection;
 using MediatR;
-using UniEnroll.Application.Abstractions;
+using UniEnroll.Infrastructure.Common.Abstractions;
 
 namespace UniEnroll.Application.Common.Behaviors;
 

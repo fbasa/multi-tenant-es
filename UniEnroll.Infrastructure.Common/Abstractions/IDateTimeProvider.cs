@@ -1,7 +1,7 @@
 
 using System;
 
-namespace UniEnroll.Application.Abstractions;
+namespace UniEnroll.Infrastructure.Common.Abstractions;
 
 public interface IDateTimeProvider
 {

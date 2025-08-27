@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using UniEnroll.Application.Abstractions;
+using UniEnroll.Infrastructure.Common.Abstractions;
 using UniEnroll.Infrastructure.Common.Auth;
 using UniEnroll.Infrastructure.Common.Options;
 using UniEnroll.Infrastructure.EF.Security;

@@ -1,11 +1,6 @@
 
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using UniEnroll.Infrastructure.Common.Abstractions;
 using UniEnroll.Reporting.Abstractions;
-using UniEnroll.Contracts.Reporting;
-using UniEnroll.Application.Abstractions;
 
 namespace UniEnroll.Reporting.Subscriptions;
 

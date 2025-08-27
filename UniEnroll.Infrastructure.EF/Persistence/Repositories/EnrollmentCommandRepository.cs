@@ -1,9 +1,9 @@
 
 using Microsoft.EntityFrameworkCore;
 using System.Data;
-using UniEnroll.Application.Abstractions;
 using UniEnroll.Contracts.Enrollment;
 using UniEnroll.Infrastructure.EF.Persistence.Sql;
+using UniEnroll.Infrastructure.EF.Repositories.Contracts;
 
 namespace UniEnroll.Infrastructure.EF.Persistence.Repositories;
 

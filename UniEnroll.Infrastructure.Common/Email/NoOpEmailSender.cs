@@ -1,6 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
-using UniEnroll.Application.Abstractions;
+using UniEnroll.Infrastructure.Common.Abstractions;
 
 namespace UniEnroll.Infrastructure.Common.Email;
 

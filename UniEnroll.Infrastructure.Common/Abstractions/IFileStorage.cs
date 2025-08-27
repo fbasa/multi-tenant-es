@@ -3,7 +3,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace UniEnroll.Application.Abstractions;
+namespace UniEnroll.Infrastructure.Common.Abstractions;
 
 public interface IFileStorage
 {

@@ -3,7 +3,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace UniEnroll.Application.Abstractions;
+namespace UniEnroll.Infrastructure.Common.Abstractions;
 
 public sealed record RefreshIssueResult(string RefreshToken, DateTimeOffset ExpiresAt);
 public sealed record RefreshRotateResult(

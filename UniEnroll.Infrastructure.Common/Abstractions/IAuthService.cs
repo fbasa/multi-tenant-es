@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace UniEnroll.Application.Abstractions;
+namespace UniEnroll.Infrastructure.Common.Abstractions;
 
 public sealed record AuthResult(string UserId, string Email, string TenantId, string[] Roles);
 

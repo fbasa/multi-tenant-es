@@ -1,6 +1,5 @@
 
 using System.Linq;
-using UniEnroll.Application.Common;
 
 namespace UniEnroll.Infrastructure.Common.Extensions;
 

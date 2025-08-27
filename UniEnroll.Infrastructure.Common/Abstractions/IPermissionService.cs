@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace UniEnroll.Application.Abstractions
+namespace UniEnroll.Infrastructure.Common.Auth
 {
     /// <summary>
     /// Checks if a user has a given permission within a tenant.

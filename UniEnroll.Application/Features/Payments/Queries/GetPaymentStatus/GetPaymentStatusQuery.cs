@@ -1,9 +1,9 @@
 
 using MediatR;
 using System;
-using UniEnroll.Application.Abstractions;
 using UniEnroll.Application.Common;
 using UniEnroll.Contracts.Payments;
+using UniEnroll.Infrastructure.EF.Repositories.Contracts;
 
 namespace UniEnroll.Application.Features.Payments.Queries;
 

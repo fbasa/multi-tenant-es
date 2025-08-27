@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace UniEnroll.Application.Abstractions;
+namespace UniEnroll.Infrastructure.EF.Repositories.Contracts;
 
 public interface IRepository<T> where T : class
 {

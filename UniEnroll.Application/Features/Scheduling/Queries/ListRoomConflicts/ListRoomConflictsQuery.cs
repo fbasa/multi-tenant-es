@@ -2,9 +2,9 @@
 using MediatR;
 using System;
 using System.Collections.Generic;
-using UniEnroll.Application.Abstractions;
 using UniEnroll.Application.Common;
 using UniEnroll.Contracts.Scheduling;
+using UniEnroll.Infrastructure.EF.Repositories.Contracts;
 
 namespace UniEnroll.Application.Features.Scheduling.Queries;
 

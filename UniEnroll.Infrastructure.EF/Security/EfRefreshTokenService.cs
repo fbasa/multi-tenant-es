@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
-using UniEnroll.Application.Abstractions;
+using UniEnroll.Infrastructure.Common.Abstractions;
 using UniEnroll.Infrastructure.Common.Options;
 using UniEnroll.Infrastructure.Common.Security;
 using UniEnroll.Infrastructure.EF.Sql;

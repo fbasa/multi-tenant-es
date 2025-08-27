@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\UniEnroll.Contracts\UniEnroll.Contracts.csproj" />
     <ProjectReference Include="..\UniEnroll.Domain\UniEnroll.Domain.csproj" />
+    <ProjectReference Include="..\UniEnroll.Infrastructure.EF\UniEnroll.Infrastructure.EF.csproj" />
   </ItemGroup>
 
 </Project>

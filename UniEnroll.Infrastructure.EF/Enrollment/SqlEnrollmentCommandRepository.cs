@@ -1,11 +1,9 @@
-using System.Data;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using UniEnroll.Application.Abstractions;
+using System.Data;
 using UniEnroll.Contracts.Enrollment;
 using UniEnroll.Infrastructure.EF.Persistence;
+using UniEnroll.Infrastructure.EF.Repositories.Contracts;
 
 namespace UniEnroll.Infrastructure.EF.Enrollment;
 

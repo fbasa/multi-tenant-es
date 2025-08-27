@@ -5,8 +5,8 @@ using System;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
-using UniEnroll.Application.Abstractions;
 using UniEnroll.Contracts.Registrar;
+using UniEnroll.Infrastructure.EF.Repositories.Contracts;
 using UniEnroll.Infrastructure.EF.Sql;
 
 namespace UniEnroll.Infrastructure.EF.Repositories;

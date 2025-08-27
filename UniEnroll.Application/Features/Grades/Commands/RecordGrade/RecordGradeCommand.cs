@@ -1,36 +1,10 @@
 
 using MediatR;
 using UniEnroll.Application.Common;
+using UniEnroll.Contracts.Grades;
+using UniEnroll.Infrastructure.EF.Repositories.Contracts;
 
 namespace UniEnroll.Application.Features.Grades.Commands;
-
-public enum GradeOutcome
-{
-    Inserted,
-    ValidationFailed
-}
-public sealed record RecordGradeResult(GradeOutcome Outcome, int? Id);
-
-public interface IGradeRepository
-{
-    Task<RecordGradeResult> RecordGradeAsync(RecordGradeRequest request);
-}
-public sealed class GradeRepository : IGradeRepository
-{
-    public async Task<RecordGradeResult> RecordGradeAsync(RecordGradeRequest request)
-    {
-        //Dummany result from db
-        var (result,id) = await Task.FromResult(("Inserted",1));
-
-        return result switch
-        {
-            "Inserted" => new RecordGradeResult(GradeOutcome.Inserted, id),
-            _ => new RecordGradeResult(GradeOutcome.ValidationFailed, null)
-        };
-    }
-}
-
-public sealed record RecordGradeRequest(string TenantId, string EnrollmentId, string Grade);
 
 public sealed record RecordGradeCommand(RecordGradeRequest Request) : IRequest<Result<RecordGradeResult>>;
 

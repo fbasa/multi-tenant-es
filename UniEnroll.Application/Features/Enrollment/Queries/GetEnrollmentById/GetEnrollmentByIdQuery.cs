@@ -1,9 +1,9 @@
 
 using MediatR;
 using UniEnroll.Application.Common;
-using UniEnroll.Application.Abstractions;
 using UniEnroll.Contracts.Enrollment;
 using UniEnroll.Domain.Enrollment;
+using UniEnroll.Infrastructure.EF.Repositories.Contracts;
 
 namespace UniEnroll.Application.Features.Enrollment.Queries.GetEnrollmentById;
 

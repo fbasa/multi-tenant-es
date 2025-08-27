@@ -2,9 +2,9 @@
 using FluentValidation;
 using MediatR;
 using System;
-using UniEnroll.Application.Abstractions;
 using UniEnroll.Application.Common;
 using UniEnroll.Contracts.Instructors;
+using UniEnroll.Infrastructure.EF.Repositories.Contracts;
 
 namespace UniEnroll.Application.Features.Instructors.Commands;
 

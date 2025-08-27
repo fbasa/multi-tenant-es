@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace UniEnroll.Application.Abstractions;
+namespace UniEnroll.Infrastructure.Common.Abstractions;
 
 public interface IJwtTokenService
 {

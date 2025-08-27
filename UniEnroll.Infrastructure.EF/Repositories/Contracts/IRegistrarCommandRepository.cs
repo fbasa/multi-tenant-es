@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using UniEnroll.Contracts.Registrar;
 
-namespace UniEnroll.Application.Abstractions;
+namespace UniEnroll.Infrastructure.EF.Repositories.Contracts;
 
 public interface IRegistrarCommandRepository
 {
