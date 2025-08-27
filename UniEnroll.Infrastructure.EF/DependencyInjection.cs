@@ -1,7 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using UniEnroll.Infrastructure.Common.Abstractions;
 using UniEnroll.Infrastructure.EF.Persistence;
+using UniEnroll.Infrastructure.EF.Persistence.Idempotency;
+using UniEnroll.Infrastructure.EF.Persistence.Interceptors;
+using UniEnroll.Infrastructure.EF.Persistence.Outbox;
 using UniEnroll.Infrastructure.EF.Repositories;
 using UniEnroll.Infrastructure.EF.Repositories.Contracts;
 
@@ -11,9 +15,14 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructureEf(this IServiceCollection services, IConfiguration config)
     {
-        var cs = config.GetConnectionString("SqlServer") ?? "Server=(localdb)\\mssqllocaldb;Database=UniEnroll;Trusted_Connection=True;MultipleActiveResultSets=true";
+        var cs = config.GetConnectionString("SqlServer") ?? throw new InvalidOperationException("Missing SQL connection string");
 
-        services.AddDbContextPool<UniEnrollDbContext>(options =>
+        // EF interceptors
+        services.AddScoped<AuditableSaveChangesInterceptor>();
+        services.AddScoped<DispatchDomainEventsInterceptor>();
+        services.AddScoped<TenantWriteInterceptor>();
+
+        services.AddDbContextPool<UniEnrollDbContext>((sp, options) =>
         {
             options.UseSqlServer(cs, sql =>
             {
@@ -36,11 +45,28 @@ public static class DependencyInjection
 
             
             */
+            options.AddInterceptors(
+               sp.GetRequiredService<AuditableSaveChangesInterceptor>(),
+               sp.GetRequiredService<DispatchDomainEventsInterceptor>(),
+               sp.GetRequiredService<TenantWriteInterceptor>()
+           );
+
+        });
+
+        services.AddDbContext<ReadDbContext>((sp,options) =>
+        {
+            options.UseSqlServer(cs);
+            options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         });
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
 
+        // Outbox
+        services.AddScoped<OutboxProcessor>();
+
+        // Idempotency
+        services.AddScoped<IIdempotencyStore, IdempotencyStore>();
 
         return services;
     }

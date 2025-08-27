@@ -6,6 +6,7 @@ using UniEnroll.Domain.Courses;
 using UniEnroll.Domain.Sections;
 using UniEnroll.Domain.Enrollment;
 using UniEnroll.Domain.Admissions;
+using UniEnroll.Infrastructure.EF.Persistence.Configurations;
 
 namespace UniEnroll.Infrastructure.EF.Persistence;
 
@@ -34,8 +35,10 @@ public sealed class UniEnrollDbContext : DbContext
         modelBuilder.ApplyConfiguration(new Configurations.EnrollmentAuditConfiguration());
         modelBuilder.ApplyConfiguration(new Configurations.ApplicationConfiguration());
 
+
         // Global query filters for multi-tenancy
         QueryFilters.Apply(modelBuilder);
         base.OnModelCreating(modelBuilder);
+        SoftDeleteConvention.ApplyToModel(modelBuilder);
     }
 }
