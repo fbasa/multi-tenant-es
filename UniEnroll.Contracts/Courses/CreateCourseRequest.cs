@@ -1,4 +1,4 @@
 
 namespace UniEnroll.Contracts.Courses;
 
-public sealed record CreateCourseRequest(string Code, string Title, int Units, string Department);
+public sealed record CreateCourseRequest(string TenantId, string Code, string Title, int Units, string Department);

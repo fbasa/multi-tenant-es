@@ -1,10 +1,7 @@
-
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Data;
-using System.Threading;
-using System.Threading.Tasks;
-using UniEnroll.Infrastructure.Common.Auth;
 using UniEnroll.Infrastructure.EF.Repositories.Contracts;
 using UniEnroll.Infrastructure.EF.Sql;
 
@@ -21,9 +18,9 @@ public sealed class PermissionRepository : IPermissionRepository
         await using var conn = new SqlConnection(_cs);
         await conn.OpenAsync(ct);
         await using var cmd = new SqlCommand(PermissionSql.HasPermission, conn);
-        cmd.Parameters.Add(new SqlParameter("@user", SqlDbType.NVarChar, 64){ Value = userId });
-        cmd.Parameters.Add(new SqlParameter("@tenant", SqlDbType.NVarChar, 64){ Value = tenantId });
-        cmd.Parameters.Add(new SqlParameter("@perm", SqlDbType.NVarChar, 64){ Value = permission });
+        cmd.Parameters.Add(new SqlParameter("@user", SqlDbType.NVarChar, 64) { Value = userId });
+        cmd.Parameters.Add(new SqlParameter("@tenant", SqlDbType.NVarChar, 64) { Value = tenantId });
+        cmd.Parameters.Add(new SqlParameter("@perm", SqlDbType.NVarChar, 64) { Value = permission });
         var result = await cmd.ExecuteScalarAsync(ct);
         return result is not null;
     }

@@ -40,14 +40,7 @@ public static class DependencyInjection
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
-        services.AddScoped<IPermissionRepository, PermissionRepository>();
 
-        services.AddScoped<IInstructorCommandRepository, InstructorCommandRepository>();
-        services.AddScoped<IRegistrarCommandRepository, RegistrarCommandRepository>();
-
-        services.AddScoped<IPaymentCommandRepository, PaymentCommandRepository>();
-        services.AddScoped<IPaymentQueryRepository, PaymentQueryRepository>();
-        services.AddScoped<ISchedulingRepository, SchedulingRepository>();
 
         return services;
     }

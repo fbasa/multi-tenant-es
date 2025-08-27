@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 using System.Linq.Expressions;
 using UniEnroll.Infrastructure.EF.Persistence;
 using UniEnroll.Infrastructure.EF.Repositories.Contracts;
