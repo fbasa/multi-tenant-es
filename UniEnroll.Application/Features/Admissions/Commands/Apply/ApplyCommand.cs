@@ -21,7 +21,7 @@ public sealed class ApplyCommandValidator : AbstractValidator<ApplyCommand>
     }
 }
 
-public sealed class ApplyCommandHandler(IRepository<Domain.Admissions.Application> repo, IIdGenerator ids, IUnitOfWork uow) : IRequestHandler<ApplyCommand, Result<string>>
+public sealed class ApplyCommandHandler(IRepositoryBase<Domain.Admissions.Application> repo, IIdGenerator ids, IUnitOfWork uow) : IRequestHandler<ApplyCommand, Result<string>>
 {
     public async Task<Result<string>> Handle(ApplyCommand request, CancellationToken ct)
     {

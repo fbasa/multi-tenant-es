@@ -10,9 +10,9 @@ public sealed record AssignRoleCommand(string TenantId, string UserId, string Ro
 
 public sealed class AssignRoleHandler : IRequestHandler<AssignRoleCommand, Result<bool>>
 {
-    private readonly IRepository<User> _repo;
+    private readonly IRepositoryBase<User> _repo;
     private readonly IUnitOfWork _uow;
-    public AssignRoleHandler(IRepository<User> repo, IUnitOfWork uow) { _repo = repo; _uow = uow; }
+    public AssignRoleHandler(IRepositoryBase<User> repo, IUnitOfWork uow) { _repo = repo; _uow = uow; }
 
     public async Task<Result<bool>> Handle(AssignRoleCommand request, CancellationToken ct)
     {

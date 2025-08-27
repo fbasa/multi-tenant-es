@@ -5,9 +5,9 @@ using UniEnroll.Infrastructure.EF.Repositories.Contracts;
 
 namespace UniEnroll.Infrastructure.EF.Repositories;
 
-internal sealed class EfUnitOfWork : IUnitOfWork
+internal sealed class UnitOfWork : IUnitOfWork
 {
     private readonly UniEnrollDbContext _db;
-    public EfUnitOfWork(UniEnrollDbContext db) => _db = db;
+    public UnitOfWork(UniEnrollDbContext db) => _db = db;
     public async Task<int> SaveChangesAsync(CancellationToken ct = default) => await _db.SaveChangesAsync(ct);
 }

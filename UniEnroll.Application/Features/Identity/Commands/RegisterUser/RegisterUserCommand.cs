@@ -22,10 +22,10 @@ public sealed class RegisterUserCommandValidator : AbstractValidator<RegisterUse
 
 public sealed class RegisterUserHandler : IRequestHandler<RegisterUserCommand, Result<string>>
 {
-    private readonly IRepository<User> _repo;
+    private readonly IRepositoryBase<User> _repo;
     private readonly IIdGenerator _ids;
     private readonly IUnitOfWork _uow;
-    public RegisterUserHandler(IRepository<User> repo, IIdGenerator ids, IUnitOfWork uow)
+    public RegisterUserHandler(IRepositoryBase<User> repo, IIdGenerator ids, IUnitOfWork uow)
     { _repo = repo; _ids = ids; _uow = uow; }
 
     public async Task<Result<string>> Handle(RegisterUserCommand request, CancellationToken ct)

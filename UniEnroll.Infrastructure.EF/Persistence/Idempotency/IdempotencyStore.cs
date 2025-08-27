@@ -3,14 +3,14 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using UniEnroll.Infrastructure.Common.Idempotency;
+using UniEnroll.Infrastructure.Common.Abstractions;
 
 namespace UniEnroll.Infrastructure.EF.Persistence.Idempotency;
 
-public sealed class EfIdempotencyStore : IIdempotencyStore
+public sealed class IdempotencyStore : IIdempotencyStore
 {
     private readonly UniEnrollDbContext _db;
-    public EfIdempotencyStore(UniEnrollDbContext db) => _db = db;
+    public IdempotencyStore(UniEnrollDbContext db) => _db = db;
 
     public async Task<bool> CheckAndRecordAsync(string key, string contentHash, int ttlMinutes, CancellationToken ct = default)
     {

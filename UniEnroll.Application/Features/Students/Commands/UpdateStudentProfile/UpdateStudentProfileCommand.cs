@@ -12,9 +12,9 @@ public sealed record UpdateStudentProfileCommand(string TenantId, string Student
 
 public sealed class UpdateStudentProfileHandler : IRequestHandler<UpdateStudentProfileCommand, Result<bool>>
 {
-    private readonly IRepository<Student> _repo;
+    private readonly IRepositoryBase<Student> _repo;
     private readonly IUnitOfWork _uow;
-    public UpdateStudentProfileHandler(IRepository<Student> repo, IUnitOfWork uow) { _repo = repo; _uow = uow; }
+    public UpdateStudentProfileHandler(IRepositoryBase<Student> repo, IUnitOfWork uow) { _repo = repo; _uow = uow; }
 
     public async Task<Result<bool>> Handle(UpdateStudentProfileCommand request, CancellationToken ct)
     {

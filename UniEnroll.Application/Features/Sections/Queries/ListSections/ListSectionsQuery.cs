@@ -11,8 +11,8 @@ public sealed record ListSectionsQuery(string TenantId, string? CourseId, string
 
 public sealed class ListSectionsHandler : IRequestHandler<ListSectionsQuery, Result<PagedResult<SectionDto>>>
 {
-    private readonly IQueryRepository<Section> _q;
-    public ListSectionsHandler(IQueryRepository<Section> q) => _q = q;
+    private readonly IRepositoryBase<Section> _q;
+    public ListSectionsHandler(IRepositoryBase<Section> q) => _q = q;
 
     public async Task<Result<PagedResult<SectionDto>>> Handle(ListSectionsQuery request, CancellationToken ct)
     {

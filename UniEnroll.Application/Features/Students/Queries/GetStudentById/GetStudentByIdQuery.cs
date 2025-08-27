@@ -11,8 +11,8 @@ public sealed record GetStudentByIdQuery(string TenantId, string StudentId) : IR
 
 public sealed class GetStudentByIdHandler : IRequestHandler<GetStudentByIdQuery, Result<StudentDto>>
 {
-    private readonly IQueryRepository<Student> _q;
-    public GetStudentByIdHandler(IQueryRepository<Student> q) => _q = q;
+    private readonly IRepositoryBase<Student> _q;
+    public GetStudentByIdHandler(IRepositoryBase<Student> q) => _q = q;
 
     public async Task<Result<StudentDto>> Handle(GetStudentByIdQuery request, CancellationToken ct)
     {

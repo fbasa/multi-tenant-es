@@ -1,4 +1,4 @@
-namespace UniEnroll.Infrastructure.Common.Files;
+namespace UniEnroll.Infrastructure.Common.Options;
 
 public sealed class StorageOptions
 {

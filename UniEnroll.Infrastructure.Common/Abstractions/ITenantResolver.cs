@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace UniEnroll.Infrastructure.Common.Tenancy;
+namespace UniEnroll.Infrastructure.Common.Abstractions;
 
 public interface ITenantResolver
 {

@@ -1,19 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using UniEnroll.Infrastructure.EF.Persistence;
 using UniEnroll.Infrastructure.EF.Repositories.Contracts;
 
 namespace UniEnroll.Infrastructure.EF.Repositories;
 
-internal sealed class EfRepository<T> : IRepository<T> where T : class
+internal sealed class RepositoryBase<T> : IRepositoryBase<T> where T : class
 {
     private readonly UniEnrollDbContext _db;
-    public EfRepository(UniEnrollDbContext db) => _db = db;
+    public RepositoryBase(UniEnrollDbContext db) => _db = db;
 
     public async Task AddAsync(T entity, CancellationToken ct = default)
         => await _db.Set<T>().AddAsync(entity, ct);

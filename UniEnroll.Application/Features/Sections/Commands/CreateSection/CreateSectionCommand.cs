@@ -23,10 +23,10 @@ public sealed record CreateSectionCommand(
 
 public sealed class CreateSectionHandler : IRequestHandler<CreateSectionCommand, Result<string>>
 {
-    private readonly IRepository<Section> _repo;
+    private readonly IRepositoryBase<Section> _repo;
     private readonly IUnitOfWork _uow;
     private readonly IIdGenerator _ids;
-    public CreateSectionHandler(IRepository<Section> repo, IUnitOfWork uow, IIdGenerator ids) { _repo = repo; _uow = uow; _ids = ids; }
+    public CreateSectionHandler(IRepositoryBase<Section> repo, IUnitOfWork uow, IIdGenerator ids) { _repo = repo; _uow = uow; _ids = ids; }
     public async Task<Result<string>> Handle(CreateSectionCommand request, CancellationToken ct)
     {
         var id = _ids.NewId();

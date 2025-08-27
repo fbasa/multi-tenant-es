@@ -17,9 +17,4 @@
     <ProjectReference Include="..\UniEnroll.Infrastructure.Common\UniEnroll.Infrastructure.Common.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Sql\" />
-    <Folder Include="Persistence\Security\" />
-  </ItemGroup>
-
 </Project>

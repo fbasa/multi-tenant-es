@@ -1,12 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using UniEnroll.Infrastructure.Common.Auth;
-using UniEnroll.Infrastructure.EF.Enrollment;
 using UniEnroll.Infrastructure.EF.Persistence;
 using UniEnroll.Infrastructure.EF.Repositories;
 using UniEnroll.Infrastructure.EF.Repositories.Contracts;
-using UniEnroll.Infrastructure.EF.Security;
 
 namespace UniEnroll.Infrastructure.EF;
 
@@ -41,11 +38,9 @@ public static class DependencyInjection
             */
         });
 
-        services.AddScoped<IUnitOfWork, EfUnitOfWork>();
-        services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
-        services.AddScoped<IPermissionService, EfPermissionService>();
-        services.AddScoped(typeof(IQueryRepository<>), typeof(EfQueryRepository<>));
-        services.AddScoped<IEnrollmentCommandRepository, SqlEnrollmentCommandRepository>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
+        services.AddScoped<IPermissionRepository, PermissionRepository>();
 
         services.AddScoped<IInstructorCommandRepository, InstructorCommandRepository>();
         services.AddScoped<IRegistrarCommandRepository, RegistrarCommandRepository>();

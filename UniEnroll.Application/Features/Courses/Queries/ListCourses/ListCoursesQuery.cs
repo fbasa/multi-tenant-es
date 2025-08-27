@@ -11,8 +11,8 @@ public sealed record ListCoursesQuery(string TenantId, int Page, int Size) : IRe
 
 public sealed class ListCoursesHandler : IRequestHandler<ListCoursesQuery, Result<PagedResult<CourseDto>>>
 {
-    private readonly IQueryRepository<Course> _q;
-    public ListCoursesHandler(IQueryRepository<Course> q) => _q = q;
+    private readonly IRepositoryBase<Course> _q;
+    public ListCoursesHandler(IRepositoryBase<Course> q) => _q = q;
 
     public async Task<Result<PagedResult<CourseDto>>> Handle(ListCoursesQuery request, CancellationToken ct)
     {

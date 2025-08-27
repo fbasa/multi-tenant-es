@@ -10,8 +10,8 @@ public sealed record GetTenantByIdQuery(string TenantId) : IRequest<Result<Tenan
 
 public sealed class GetTenantByIdQueryHandler : IRequestHandler<GetTenantByIdQuery, Result<Tenant>>
 {
-    private readonly IQueryRepository<Tenant> _q;
-    public GetTenantByIdQueryHandler(IQueryRepository<Tenant> q) => _q = q;
+    private readonly IRepositoryBase<Tenant> _q;
+    public GetTenantByIdQueryHandler(IRepositoryBase<Tenant> q) => _q = q;
 
     public async Task<Result<Tenant>> Handle(GetTenantByIdQuery request, CancellationToken ct)
     {

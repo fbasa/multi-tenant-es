@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace UniEnroll.Infrastructure.EF.Repositories.Contracts;
 
-public interface IRepository<T> where T : class
+public interface IRepositoryBase<T> where T : class
 {
     Task AddAsync(T entity, CancellationToken ct = default);
     Task<T?> GetAsync(Expression<Func<T, bool>> predicate, CancellationToken ct = default);

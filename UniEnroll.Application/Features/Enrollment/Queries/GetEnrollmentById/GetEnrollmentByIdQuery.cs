@@ -11,8 +11,8 @@ public sealed record GetEnrollmentByIdQuery(string TenantId, string EnrollmentId
 
 public sealed class GetEnrollmentByIdHandler : IRequestHandler<GetEnrollmentByIdQuery, Result<EnrollmentDto>>
 {
-    private readonly IQueryRepository<Domain.Enrollment.Enrollment> _q;
-    public GetEnrollmentByIdHandler(IQueryRepository<Domain.Enrollment.Enrollment> q) => _q = q;
+    private readonly IRepositoryBase<Domain.Enrollment.Enrollment> _q;
+    public GetEnrollmentByIdHandler(IRepositoryBase<Domain.Enrollment.Enrollment> q) => _q = q;
 
     public async Task<Result<EnrollmentDto>> Handle(GetEnrollmentByIdQuery request, CancellationToken ct)
     {

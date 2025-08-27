@@ -22,7 +22,7 @@ public sealed class CreateCourseCommandValidator : AbstractValidator<CreateCours
     }
 }
 
-public sealed class CreateCourseHandler(IRepository<Course> repo, IUnitOfWork uow, IIdGenerator ids) : IRequestHandler<CreateCourseCommand, Result<string>>
+public sealed class CreateCourseHandler(IRepositoryBase<Course> repo, IUnitOfWork uow, IIdGenerator ids) : IRequestHandler<CreateCourseCommand, Result<string>>
 {
     public async Task<Result<string>> Handle(CreateCourseCommand request, CancellationToken ct)
     {

@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using UniEnroll.Infrastructure.Common.Abstractions;
 using UniEnroll.Infrastructure.Common.Auth;
+using UniEnroll.Infrastructure.EF.Repositories.Contracts;
 
 namespace UniEnroll.Api.Auth;
 
-public sealed class PermissionAuthorizationHandler(ITenantContext tenant, IPermissionService perms) : AuthorizationHandler<PermissionRequirement>
+public sealed class PermissionAuthorizationHandler(ITenantContext tenant, IPermissionRepository perms) : AuthorizationHandler<PermissionRequirement>
 {
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, PermissionRequirement requirement)
     {

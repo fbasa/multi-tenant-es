@@ -9,8 +9,8 @@ public sealed record GetApplicationStatusQuery(string TenantId, string Applicati
 
 public sealed class GetApplicationStatusHandler : IRequestHandler<GetApplicationStatusQuery, Result<string>>
 {
-    private readonly IQueryRepository<Domain.Admissions.Application> _q;
-    public GetApplicationStatusHandler(IQueryRepository<Domain.Admissions.Application> q) => _q = q;
+    private readonly IRepositoryBase<Domain.Admissions.Application> _q;
+    public GetApplicationStatusHandler(IRepositoryBase<Domain.Admissions.Application> q) => _q = q;
 
     public async Task<Result<string>> Handle(GetApplicationStatusQuery request, CancellationToken ct)
     {

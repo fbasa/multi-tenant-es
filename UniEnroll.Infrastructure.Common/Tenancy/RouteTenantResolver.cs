@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http;
+using UniEnroll.Infrastructure.Common.Abstractions;
 
 namespace UniEnroll.Infrastructure.Common.Tenancy;
 

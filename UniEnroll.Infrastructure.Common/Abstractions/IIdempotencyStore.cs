@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace UniEnroll.Infrastructure.Common.Idempotency;
+namespace UniEnroll.Infrastructure.Common.Abstractions;
 
 public interface IIdempotencyStore
 {

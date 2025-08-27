@@ -29,10 +29,10 @@ public sealed class RegisterStudentCommandValidator : AbstractValidator<Register
 
 public sealed class RegisterStudentHandler : IRequestHandler<RegisterStudentCommand, Result<string>>
 {
-    private readonly IRepository<Student> _repo;
+    private readonly IRepositoryBase<Student> _repo;
     private readonly IUnitOfWork _uow;
     private readonly IIdGenerator _ids;
-    public RegisterStudentHandler(IRepository<Student> repo, IUnitOfWork uow, IIdGenerator ids) { _repo = repo; _uow = uow; _ids = ids; }
+    public RegisterStudentHandler(IRepositoryBase<Student> repo, IUnitOfWork uow, IIdGenerator ids) { _repo = repo; _uow = uow; _ids = ids; }
 
     public async Task<Result<string>> Handle(RegisterStudentCommand request, CancellationToken ct)
     {

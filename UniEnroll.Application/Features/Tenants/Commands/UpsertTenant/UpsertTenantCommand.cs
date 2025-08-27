@@ -21,11 +21,11 @@ public sealed class UpsertTenantCommandValidator : AbstractValidator<UpsertTenan
 
 public sealed class UpsertTenantCommandHandler : IRequestHandler<UpsertTenantCommand, Result<string>>
 {
-    private readonly IRepository<Tenant> _repo;
+    private readonly IRepositoryBase<Tenant> _repo;
     private readonly IUnitOfWork _uow;
     private readonly IIdGenerator _ids;
 
-    public UpsertTenantCommandHandler(IRepository<Tenant> repo, IUnitOfWork uow, IIdGenerator ids)
+    public UpsertTenantCommandHandler(IRepositoryBase<Tenant> repo, IUnitOfWork uow, IIdGenerator ids)
     { _repo = repo; _uow = uow; _ids = ids; }
 
     public async Task<Result<string>> Handle(UpsertTenantCommand request, CancellationToken ct)
