@@ -7,12 +7,13 @@ public sealed class RouteTenantResolver : ITenantResolver
 {
     public Task<string?> ResolveAsync(HttpContext httpContext)
     {
-        // Endpoint routing must have run to populate RouteValues
+        //// Endpoint routing must have run to populate RouteValues
         //if (httpContext.Request.RouteValues.TryGetValue(TenantHeaderNames.TenantId, out var value) &&
         //    value is string s && !string.IsNullOrWhiteSpace(s))
         //{
         //    return Task.FromResult<string?>(s);
         //}
-        return Task.FromResult<string?>(null);
+        //return Task.FromResult<string?>(null);
+        throw new NotImplementedException();
     }
 }

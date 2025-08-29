@@ -1,10 +1,12 @@
-using System;
 using System.Collections.Concurrent;
-using System.Threading;
-using System.Threading.Tasks;
 using UniEnroll.Infrastructure.Common.Abstractions;
 
 namespace UniEnroll.Infrastructure.Common.Idempotency;
+
+//Two IdempotencyStore implementation,
+//"In-memory" - dev/local or single-instance demos only (not multi-node safe; resets on restart).
+//"sql" - production (SQL/Redis/etc.), supports multi-instance and survives restarts.
+//we use IdempotencyStore from UniEnroll.Infrastructure.EF.Persistence.Idempotency
 
 public sealed class InMemoryIdempotencyStore : IIdempotencyStore
 {

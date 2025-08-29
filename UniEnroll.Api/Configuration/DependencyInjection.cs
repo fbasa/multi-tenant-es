@@ -5,9 +5,12 @@ using UniEnroll.Api.Support;
 using UniEnroll.Application;
 using UniEnroll.Application.Common;
 using UniEnroll.Infrastructure.Common;
+using UniEnroll.Infrastructure.Common.Abstractions;
+using UniEnroll.Infrastructure.Common.Idempotency;
 using UniEnroll.Infrastructure.EF;
-using UniEnroll.Observability;
+using UniEnroll.Infrastructure.EF.Persistence.Idempotency;
 using UniEnroll.Messaging;
+using UniEnroll.Observability;
 using UniEnroll.Reporting;
 
 namespace UniEnroll.Api.Configuration;
@@ -18,19 +21,23 @@ public static class DependencyInjection
     {
         services.AddMemoryCache(); // for in-proc caching
 
-        // 001 Serilog + Opentelemetry
-        services.AddObservability(config)               //UniEnroll.Observability
-                .AddInfrastructureCommon(config)        //UniEnroll.Infrastructure.Common
-                .AddInfrastructureEf(config)            //UniEnroll.Infrastructure.EF
 
-        // MediatR (scan Application assembly)
-        .AddMediatR(cfg =>
-        {
-            cfg.RegisterServicesFromAssembly(typeof(Result<>).Assembly);
-        })
+        services.AddObservability(config)               //UniEnroll.Observability
+                .AddInfrastructureCommon(config)        //UniEnroll.Infrastructure.Common  
+                .AddInfrastructureEf(config);            //UniEnroll.Infrastructure.EF
+
+        //Two IdempotencyStore implementation,
+        //"In-memory" - dev/local or single-instance demos only (not multi-node safe; resets on restart).
+        //"sql" - production (SQL/Redis/etc.), supports multi-instance and survives restarts.
+        //Based on config value, register both, resolve only one.
+        services.AddKeyedSingleton<IIdempotencyStore, InMemoryIdempotencyStore>("memory")       //UniEnroll.Infrastructure.Common
+                .AddKeyedScoped<IIdempotencyStore, IdempotencyStore>("sql")                     //UniEnroll.Infrastructure.EF
+                .AddScoped<IIdempotencyStore>(sp =>
+                    sp.GetRequiredKeyedService<IIdempotencyStore>(
+                        sp.GetRequiredService<IConfiguration>()["Idempotency:Provider"] ?? "memory"));
 
         // Controllers + JSON
-        .AddControllers()
+        services.AddControllers()
             .AddJsonOptions(o =>
             {
                 o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());

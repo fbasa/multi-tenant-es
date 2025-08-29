@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using UniEnroll.Infrastructure.Common.Abstractions;
 using UniEnroll.Infrastructure.Common.Auth;
 using UniEnroll.Infrastructure.Common.Email;
@@ -16,7 +18,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructureCommon(this IServiceCollection services, IConfiguration config)
     {
-        //services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();    //TODO
+        services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();    //TODO
 
         // Options
         services.Configure<ApiLimitsOptions>(config.GetSection("ApiLimits"));
@@ -29,9 +31,6 @@ public static class DependencyInjection
         services.AddScoped<ITenantContext, TenantContext>();
         services.AddSingleton<IDateTimeProvider, SystemClock>();
         services.AddSingleton<IIdGenerator, IdGenerator>();
-     
-        // Idempotency
-        services.AddSingleton<IIdempotencyStore, InMemoryIdempotencyStore>();
 
         // Email + Files
         services.AddSingleton<IEmailSender, NoOpEmailSender>();

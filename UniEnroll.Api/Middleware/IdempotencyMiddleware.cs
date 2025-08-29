@@ -46,7 +46,10 @@ public sealed class IdempotencyMiddleware
             context.Request.EnableBuffering();
             string body;
             using (var reader = new StreamReader(context.Request.Body, Encoding.UTF8, detectEncodingFromByteOrderMarks: false, leaveOpen: true))
-            { body = await reader.ReadToEndAsync(); context.Request.Body.Position = 0L; }
+            { 
+                body = await reader.ReadToEndAsync(); 
+                context.Request.Body.Position = 0L; 
+            }
 
             var hash = ContentHasher.Sha256(body);
             var replay = await _store.CheckAndRecordAsync(idKey, hash, _opts.Value.TtlMinutes, context.RequestAborted);
