@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Reflection;
+using UniEnroll.Application.Common;
 using UniEnroll.Application.Common.Behaviors;
 using UniEnroll.Application.Mapping;
 

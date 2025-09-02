@@ -1,8 +1,3 @@
-
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using UniEnroll.Infrastructure.Common.Abstractions;
 
 namespace UniEnroll.Infrastructure.EF.Persistence.Idempotency;
@@ -16,10 +11,21 @@ public sealed class IdempotencyStore : IIdempotencyStore
     {
         var rec = await _db.Set<IdempotencyRecord>().FindAsync(new object[] { key }, ct);
         var now = DateTimeOffset.UtcNow;
-        if (rec is not null && rec.Hash == contentHash && rec.ExpiresAt > now) return true;
+
+        if (rec is not null && rec.Hash == contentHash && rec.ExpiresAt > now)
+        {
+            return true;
+        }
 
         if (rec is null)
-            _db.Set<IdempotencyRecord>().Add(new IdempotencyRecord { Key = key, Hash = contentHash, ExpiresAt = now.AddMinutes(ttlMinutes) });
+        {
+            _db.Set<IdempotencyRecord>().Add(new IdempotencyRecord 
+            { 
+                Key = key, 
+                Hash = contentHash, 
+                ExpiresAt = now.AddMinutes(ttlMinutes) 
+            });
+        }
         else
         {
             rec.Hash = contentHash;

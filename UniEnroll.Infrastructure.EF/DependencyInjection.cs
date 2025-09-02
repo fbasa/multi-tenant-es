@@ -38,7 +38,7 @@ public static class DependencyInjection
             await strategy.ExecuteAsync(async () =>
             {
                 await using var tx = await db.Database.BeginTransactionAsync(ct);
-                // …multiple ops…
+                // ï¿½multiple opsï¿½
                 await db.SaveChangesAsync(ct);
                 await tx.CommitAsync(ct);
             });
@@ -64,8 +64,8 @@ public static class DependencyInjection
 
         // Outbox
         services.AddScoped<OutboxProcessor>();
-
-        // Idempotency
+        
+        // Idempotency store SQL
         services.AddScoped<IIdempotencyStore, IdempotencyStore>();
 
         return services;
