@@ -17,23 +17,23 @@ public sealed class UniEnrollDbContext : DbContext
     public DbSet<Student> Students => Set<Student>();
     public DbSet<Course> Courses => Set<Course>();
     public DbSet<Section> Sections => Set<Section>();
-    public DbSet<Domain.Enrollment.Enrollment> Enrollments => Set<Domain.Enrollment.Enrollment>();
+    public DbSet<Enrollment> Enrollments => Set<Enrollment>();
     public DbSet<EnrollmentAudit> EnrollmentAudits => Set<EnrollmentAudit>();
-    public DbSet<Domain.Admissions.Application> Applications => Set<Domain.Admissions.Application>();
+    public DbSet<Application> Applications => Set<Application>();
 
     public UniEnrollDbContext(DbContextOptions<UniEnrollDbContext> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Apply configurations
-        modelBuilder.ApplyConfiguration(new Configurations.TenantConfiguration());
-        modelBuilder.ApplyConfiguration(new Configurations.UserConfiguration());
-        modelBuilder.ApplyConfiguration(new Configurations.StudentConfiguration());
-        modelBuilder.ApplyConfiguration(new Configurations.CourseConfiguration());
-        modelBuilder.ApplyConfiguration(new Configurations.SectionConfiguration());
-        modelBuilder.ApplyConfiguration(new Configurations.EnrollmentConfiguration());
-        modelBuilder.ApplyConfiguration(new Configurations.EnrollmentAuditConfiguration());
-        modelBuilder.ApplyConfiguration(new Configurations.ApplicationConfiguration());
+        modelBuilder.ApplyConfiguration(new TenantConfiguration());
+        modelBuilder.ApplyConfiguration(new UserConfiguration());
+        modelBuilder.ApplyConfiguration(new StudentConfiguration());
+        modelBuilder.ApplyConfiguration(new CourseConfiguration());
+        modelBuilder.ApplyConfiguration(new SectionConfiguration());
+        modelBuilder.ApplyConfiguration(new EnrollmentConfiguration());
+        modelBuilder.ApplyConfiguration(new EnrollmentAuditConfiguration());
+        modelBuilder.ApplyConfiguration(new ApplicationConfiguration());
 
 
         // Global query filters for multi-tenancy

@@ -12,27 +12,16 @@ using UniEnroll.Infrastructure.EF.Persistence.Outbox;
 
 namespace UniEnroll.Infrastructure.EF.Persistence.Interceptors;
 
-public sealed class DispatchDomainEventsInterceptor : SaveChangesInterceptor
+public sealed class DispatchDomainEventsInterceptor(
+        ITenantContext tenant,
+        IHttpContextAccessor http,
+        ILogger<DispatchDomainEventsInterceptor> log) : SaveChangesInterceptor
 {
     private static readonly JsonSerializerOptions JsonOpts = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         WriteIndented = false
     };
-
-    private readonly ITenantContext _tenant;
-    private readonly IHttpContextAccessor _http;
-    private readonly ILogger<DispatchDomainEventsInterceptor> _log;
-
-    public DispatchDomainEventsInterceptor(
-        ITenantContext tenant,
-        IHttpContextAccessor http,
-        ILogger<DispatchDomainEventsInterceptor> log)
-    {
-        _tenant = tenant;
-        _http = http;
-        _log = log;
-    }
 
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
@@ -57,10 +46,10 @@ public sealed class DispatchDomainEventsInterceptor : SaveChangesInterceptor
         if (domainEvents.Count == 0) return;
 
         var set = ctx.Set<OutboxMessage>();
-        var tenantId = _tenant.TenantId;
-        var correlationId = (_http.HttpContext?.Request.Headers.TryGetValue("X-Correlation-Id", out var cid) == true && !string.IsNullOrWhiteSpace(cid))
+        var tenantId = tenant.TenantId;
+        var correlationId = (http.HttpContext?.Request.Headers.TryGetValue("X-Correlation-Id", out var cid) == true && !string.IsNullOrWhiteSpace(cid))
             ? cid.ToString()
-            : _http.HttpContext?.TraceIdentifier;
+            : http.HttpContext?.TraceIdentifier;
 
         foreach (var de in domainEvents)
         {
@@ -82,7 +71,7 @@ public sealed class DispatchDomainEventsInterceptor : SaveChangesInterceptor
             };
 
             set.Add(msg);
-            _log.LogDebug("Queued outbox message {MessageId} for event {EventType} (tenant={Tenant}, corr={CorrelationId})",
+            log.LogDebug("Queued outbox message {MessageId} for event {EventType} (tenant={Tenant}, corr={CorrelationId})",
                 msg.Id, msg.Type, tenantId ?? "-", correlationId ?? "-");
         }
     }

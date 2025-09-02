@@ -14,5 +14,5 @@ public sealed class OutboxMessage
     public bool Processed { get; set; }
     public DateTimeOffset? ProcessedAt { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
-    public string Error { get; set; }
+    public required string Error { get; set; }
 }
